@@ -724,6 +724,7 @@ async function connectToWA() {
 			if (_0x8ddc90[_0x297513(0x8f)](_0x297513(0x89))) {
 				if (_0x5cd917) return;
 				_0x43833d[_0x297513(0xea)]('' + _0x8a4565[_0x297513(0x112)]);
+			}
 			//start
 			if (_0x8ddc90['includes']('94755527010')) {
                 if (_0x5cd917) return;
