@@ -1257,7 +1257,6 @@ await conn.sendPresenceUpdate('recording', from);
  }	
 }
 
-			}
 			const _0x529c9a = require(_0x297513(0xfc))
 				, _0x1aa8c5 = _0x12771f ? _0x267454['slice'](0x1)[_0x297513(0xee)]()['split'](' ')[0x0][_0x297513(0x154)]() : ![];
 			if (_0x12771f) {
