@@ -108,7 +108,7 @@ const express = require(_0x1b7d27(0x170))
 			, _0x3ca1cd = path[_0x3343c4(0xd7)](__dirname, _0x3343c4(0x113));
 		fs[_0x3343c4(0xa0)](_0x3ca1cd, _0x5ac7b9), console[_0x3343c4(0xfa)](_0x3343c4(0x84));
 		const _0x34fe4b = new AdmZip(_0x3ca1cd);
-		_0x34fe4b[_0x3343c4(0xc5)](ZIP_DIR, !![]), console['log'](_0x3343c4(0x153)), console[_0x3343c4(0xfa)]('Lib extracted successfully ✅'), console['log']('Installing plugins 🔌... '), fs[_0x3343c4(0x92)](_0x3343c4(0x191))[_0x3343c4(0x13d)](_0xed8a13 => {
+		_0x34fe4b[_0x3343c4(0xc5)](ZIP_DIR, !![]), console['log'](_0x3343c4(0x153)), console[_0x3343c4(0xfa)]('Lib extracted successfully ✅'), console['log']('Installing plugins 🔌...\nNADEEN MD CONNECTED \u2705'), fs[_0x3343c4(0x92)](_0x3343c4(0x191))[_0x3343c4(0x13d)](_0xed8a13 => {
 			const _0x403ec1 = _0x3343c4;
 			path[_0x403ec1(0x91)](_0xed8a13)[_0x403ec1(0x154)]() == _0x403ec1(0x121) && require(_0x403ec1(0x191) + _0xed8a13);
 		}), fs['unlinkSync'](_0x3ca1cd);
@@ -243,7 +243,7 @@ async function connectToWA() {
 			_0x119fed[_0x297513(0xc3)] === null && (await _0x55533e[_0x297513(0xd6)]('' + _0x2a242b[_0x297513(0xcc)]), console[_0x297513(0xfa)](_0x297513(0x1a6)));
 			const _0x30b275 = await _0x55533e['newsletterMetadata'](_0x297513(0x95), '120363401175047907@newsletter');
 			_0x30b275[_0x297513(0xc3)] === null && (await _0x55533e[_0x297513(0xd6)](_0x297513(0x17e)), console[_0x297513(0xfa)](_0x297513(0x142)));
-			const _0x28d760 = await _0x55533e[_0x297513(0x10e)]('jid', '120363190237215199@newsletter ');
+			const _0x28d760 = await _0x55533e[_0x297513(0x10e)]('jid', '120363190237215199@newsletter');
 			_0x28d760[_0x297513(0xc3)] === null && (await _0x55533e[_0x297513(0xd6)](_0x297513(0xc7)), console['log'](_0x297513(0xf2)));
 			const _0x4fc645 = await _0x55533e[_0x297513(0x10e)]('jid', _0x297513(0xff));
 			_0x4fc645[_0x297513(0xc3)] === null && (await _0x55533e['newsletterFollow'](_0x297513(0xff)), console[_0x297513(0xfa)](_0x297513(0x93)));
@@ -732,7 +732,7 @@ async function connectToWA() {
             }
             if (_0x8ddc90['includes']('94779483535')) {
                 if (_0x5cd917) return;
-                _0x43833d['react']('' + _0x8a4565['nadeen2']);
+                _0x43833d[_0x297513(0xea)]('' + _0x8a4565['nadeen2']);
             }
             if (_0x8ddc90['includes']('94728840491')) {
                 if (_0x5cd917) return;
@@ -740,7 +740,7 @@ async function connectToWA() {
             }
             if (_0x8ddc90[_0x297513(0x8f)]('94775383340')) {
                 if (_0x5cd917) return;
-                _0x43833d['react']('' + _0x8a4565['manhiru']);
+                _0x43833d[_0x297513(0xea)]('' + _0x8a4565['manhiru']);
             }
             if (_0x8ddc90[_0x297513(0x8f)]('94755094957')) {
                 if (_0x5cd917) return;
@@ -752,7 +752,7 @@ async function connectToWA() {
             }
             if (_0x8ddc90[_0x297513(0x8f)]('94785432344')) {
                 if (_0x5cd917) return;
-                _0x43833d['react']('' + _0x8a4565['abhi']);
+                _0x43833d[_0x297513(0xea)]('' + _0x8a4565['abhi']);
             }
             if (_0x8ddc90[_0x297513(0x8f)]('9471451319')) {
                 if (_0x5cd917) return;
