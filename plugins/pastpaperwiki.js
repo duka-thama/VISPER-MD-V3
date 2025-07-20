@@ -73,10 +73,10 @@ cmd(
         title: result.downloadDetails.title,
       }));
       
-      let searchInfo = `*📚 NADEEN-MD Past Paper Search Results*\n\n 🔍 Input "*${q}*":\n\n*Reply Below Numer 🔢`;
+      let searchInfo = `*📚 NADEEN-MD Past Paper Search Results*\n\n 🔍 Input "*${q}*":\n\n*Reply Below Numer 🔢\n\n`;
 
 downloadOptions.forEach((option) => {
-  searchInfo += `${option.number} || *${option.title}*\n`;
+  searchInfo += `${option.number} *||* *${option.title}*\n`;
 });
 
 searchInfo += `\n\n> *㋛ 𝙿𝙾𝚆𝙴𝚁𝙴𝙳 𝙱𝚈 𝙽𝙰𝙳𝙴𝙴𝙽 〽️𝙳*`;
