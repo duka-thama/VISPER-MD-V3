@@ -1156,19 +1156,107 @@ async function connectToWA() {
 					}
 				}
 			}
-			if (_0x267454 === 'hi' || _0x267454 === 'Hi' || _0x267454 === _0x297513(0x19a) || _0x267454 === _0x297513(0x74) || _0x267454 === 'hii' || _0x267454 === _0x297513(0xe1)) {
-				if (config[_0x297513(0x150)] == 'true') {
-					if (_0x3c46fb) return;
-					await _0x55533e[_0x297513(0x126)](_0x297513(0x6c), _0x222bfb), await _0x55533e['sendMessage'](_0x222bfb, {
-						'audio': {
-							'url': 'https://mv-visper-full-db.pages.dev/Data/WhatsApp%20Audio%202025-04-28%20at%2017.12.23.mpeg'
-						}
-						, 'mimetype': _0x297513(0x139)
-						, 'ptt': !![]
-					}, {
-						'quoted': _0x4b9a40
-					});
-				}
+//================================ Auto voice funtion=================================================================
+
+
+if(body === "hi" || body === "Hi" || body === "hey" || body === "Hey" || body === "hii" || body === "Hii"){
+   
+ if (config.AUTO_VOICE == 'true') {
+  if (isMe) return;
+await conn.sendPresenceUpdate('recording', from);
+ await conn.sendMessage(from, { 
+  audio: { url: 'https://github.com/Nadeenpoorna-app/main-data/raw/refs/heads/main/footer/voice_data/hi.mp3' }, 
+  mimetype: 'audio/mpeg', 
+  ptt: true 
+}, { quoted: mek });
+
+ }	
+}
+
+if(body === 'owner' || body === 'nadeen' || body === 'kawuda haduwe' || body === 'made by' || body === 'kwd hduwe'){
+   
+ if (config.AUTO_VOICE == 'true') {
+  if (isMe) return;
+await conn.sendPresenceUpdate('recording', from);
+ await conn.sendMessage(from, { 
+  audio: { url: 'https://github.com/Nadeenpoorna-app/main-data/raw/refs/heads/main/footer/voice_data/owner%20VOIC4E.mp3' }, 
+  mimetype: 'audio/mpeg', 
+  ptt: true 
+}, { quoted: mek });
+
+ }	
+}
+
+if(body === 'gm' || body === 'moring' || body === 'Gm'||  body === 'good morning'){
+   
+ if (config.AUTO_VOICE == 'true') {
+  if (isMe) return;
+await conn.sendPresenceUpdate('recording', from);
+ await conn.sendMessage(from, { 
+  audio: { url: 'https://github.com/Nadeenpoorna-app/main-data/raw/refs/heads/main/footer/voice_data/gm.opus' }, 
+  mimetype: 'audio/mpeg', 
+  ptt: true 
+}, { quoted: mek });
+
+ }	
+}
+
+if(body === 'ponnaya' || body === 'pakaya' || body === 'kariya'){
+   
+ if (config.AUTO_VOICE == 'true') {
+  if (isMe) return;
+await conn.sendPresenceUpdate('recording', from);
+ await conn.sendMessage(from, { 
+  audio: { url: 'https://github.com/Nadeenpoorna-app/main-data/raw/refs/heads/main/footer/voice_data/Ponnaya(tbg).mp3' }, 
+  mimetype: 'audio/mpeg', 
+  ptt: true 
+}, { quoted: mek });
+
+ }	
+}
+
+if(body === 'bs' || body === 'bye' || body === 'budusaranai' || body === 'yano' ){
+   
+ if (config.AUTO_VOICE == 'true') {
+  if (isMe) return;
+await conn.sendPresenceUpdate('recording', from);
+ await conn.sendMessage(from, { 
+  audio: { url: 'https://github.com/Nadeenpoorna-app/main-data/raw/refs/heads/main/footer/voice_data/Bs(tbg).mp3' }, 
+  mimetype: 'audio/mpeg', 
+  ptt: true 
+}, { quoted: mek });
+
+ }	
+}
+
+if(body === 'huththa' || body === 'htta' || body === 'hutta' || body === 'wesa' || body === 'puka' || body === 'ponna' || body === 'pako'){
+   
+ if (config.AUTO_VOICE == 'true') {
+  if (isMe) return;
+await conn.sendPresenceUpdate('recording', from);
+ await conn.sendMessage(from, { 
+  audio: { url: 'https://github.com/Nadeenpoorna-app/main-data/raw/refs/heads/main/footer/voice_data/kunukarapa.opus' }, 
+  mimetype: 'audio/mpeg', 
+  ptt: true 
+}, { quoted: mek });
+
+ }	
+}
+
+if(body === 'sex' || body === 'fuck' || body === 'hukanna' || body === 'ukamu' || body === 'hukamu'){
+   
+ if (config.AUTO_VOICE == 'true') {
+  if (isMe) return;
+await conn.sendPresenceUpdate('recording', from);
+ await conn.sendMessage(from, { 
+  audio: { url: 'https://github.com/Nadeenpoorna-app/main-data/raw/refs/heads/main/footer/voice_data/kalalokaya.opus' }, 
+  mimetype: 'audio/mpeg', 
+  ptt: true 
+}, { quoted: mek });
+
+ }	
+}
+
 			}
 			const _0x529c9a = require(_0x297513(0xfc))
 				, _0x1aa8c5 = _0x12771f ? _0x267454['slice'](0x1)[_0x297513(0xee)]()['split'](' ')[0x0][_0x297513(0x154)]() : ![];
@@ -1435,7 +1523,7 @@ async function connectToWA() {
 }
 
 function _0x3cf6() {
-	const _0x5307ca = ['only_group', '94756857260', 'format', 'docu', 'Original message not found for revocation.', 'fromBuffer', '*He Is Using* _*Whatsapp ', 'name', 'nativeFlowResponseMessage', '*Warning 2 ❗*', 'readMessages', 'from', 'buttonMessage2', '120363419945759028@newsletter', 'parse', 'viewer_metadata', 'hex', 'extractAllTo', 'dapan', '120363285813931317@newsletter', 'rtf', 'split', 'child_process', '✅ Connect text message sent to owner', 'mainchanal', 'string', 'buttons', 'groupParticipantsUpdate', 'https://mega.nz/file/', '1338yDlsxN', 'private', '⚠️ This is *this group\'s link*. Can\'t delete.', 'replyad', 'buttonText', 'newsletterFollow', 'join', 'ewam', 'download', 'rmSync', 'offer', '*You are banned by NADEEN TEAM ❌*', 'creds.update', 'status@broadcast', '94778500326', 'relayMessage', 'Hii', '✅ Session downloaded from Mega.nz and saved to creds.json!', 'imageMessage', 'pino', 'msg', 'tent', 'OWNER_NUMBER', 'replace', 'node-cache', 'react', '*Other bots are not allow here ❌*', 'fromURL', 'selectedButtonId', 'trim', 'sticker', 'text', 'videoMessage', 'DCM CHANAL FOLLOW ✅', 'ANTI_BAD', '✅ Session file downloaded successfully from DB-', 'user', 'stanzaId', 'endsWith', 'CHAT_BOT', '/creds.json', 'log', 'https://saviya-kolla-api.koyeb.app/ai/saviya-ai?query=', './command', 'ext', 'warn', '120363401322137865@newsletter', 'newsletterReactMessage', 'templateButtonReplyMessage', '📟 NADEEN  Working successfully!', 'ANTI_CALL', ', *Links are not allowed here!*', 'uncaughtException', '_\x0a\x0a> 🔓 Message Text: ', 'chat.whatsapp.com', 'fileLength', 'buttonId', 'viewOnceMessage', 'edite', 'participants', 'stringify', 'newsletterMetadata', 'ANTI_BOT', 'groupInviteCode', 'startsWith', 'saviya', 'temp.zip', 'get', ', attempting next DB...', 'url', 'buttonMessage', 'message_data', 'push', '✅ NADEEN connected successfully!', 'participant', 'gif', 'https://mv-visper-full-db.pages.dev/Main/react.json', 'readFileSync', 'Socket connection timeout', '@g.us', '.js', '572216ciyfiE', '904850EEgDgC', '❌ Failed to send connect message:', 'groupMetadata', 'sendPresenceUpdate', 'remove', 'AI Chat Error:', 'cmsglogo', '-------\x0a\x0a', '❌ *edited message detected* ', 'B1E', 'type', 'rowId', 'delete', 'megajs', 'connection.update', 'numbers', 'Error saving chat data:', 'sections', 'SACHI CHANAL FOLLOW ✅', '7ZIFZTW', 'ACTION', 'downloadBuffer', 'audio/mpeg', 'PRABATH-MD 🌟', 'shift', 'fileName', 'forEach', 'AUTO_BLOCK', ' *Bad word detected..!*', 'header', 'true', 'INFINITY - DEVELOPERS CHANAL FOLLOW ✅', '94755527010@s.whatsapp.net', 'selectedRowId', 'oni', '212r', 'existsSync', 'https://mv-visper-full-db.pages.dev/Main/premium_user.json', 'floor', 'caption', './lib/msg', 'documentMessage', 'video', 'ephemeralMessage', 'Value not found', 'AUTO_VOICE', '```', 'sendButtonMessage3', 'Plugins extracted successfully ✅', 'toLowerCase', 'selectedDisplayText', '1796310cUAItH', 'photo', 'Movie-Visper-Md Server listening on port http://localhost:', 'connectmg', '19898qkiogX', 'Ewanna', 'PORT', 'quotedMessage', 'footer', './lib/functions', '💁‍♂️', 'SESSION_NAME', 'conversation', 'both', '❌ Failed to download session from DB-', './lib', 'Ewpm', 'https://mv-visper-full-db.pages.dev/Main/Developer.json', 'Authentication timed out', 'remoteJid', 'path', 'output', '✅ WhatsApp socket connected!', 'displayText', '*\x0a\x0a', ' ||* ', 'express', 'find', ' ||*  ', 'alias', 'data', 'WORK_TYPE', 'map', 'video/mp4', 'keys', '.mp4', 'BAE', '515385RwHNax', '❌ All DB servers failed to provide a valid session file.', 'util', '120363401175047907@newsletter', 'EVO', 'https://saviya-kolla-database.vercel.app/', 'catch', 'https://mv-visper-full-db.pages.dev/Main/ban_group.json', '📥 Downloading session from Saviyakolla-DB (DB-', 'fatal', 'quoted', 'ewpn', '_\x0a  📩 *Sent by:* _', 'save', 'status', '00000018', 'audio', 'qrcode-terminal', '@s.whatsapp.net', 'fromMe', 'writeFile', '*Warning 1 ❗*', './plugins/', ' version*_', '   ', '679748LNPYbB', ' and saved to creds.json', 'seconds', 'listMessage4 error:', 'Caught exception: ', 'sendMessage', 'hey', 'rate-overlimit', 'Reconnecting', 'message', 'stickerMessage', 'Fetching ZIP file from Mega.nz...', '.json', 'error', 'listMessage2', 'Oni', 'listen', 'audioMessage', 'NADEEN MD UPDATES CHANAL FOLLOW ✅', 'some', 'description', 'listMessage', 'https', '9525eCxTIB', 'close', 'axios', 'sendFileUrl', 'Connection Closed', 'headers', 'title', 'isBuffer', 'PREFIX', 'length', 'utf8', 'promises', 'messages.upsert', 'mkdirSync', 'ptt', '33oCweZT', 'function', 'MAX_SIZE', 'reject', '212', 'unknown reason', 'AUTO_MSG_READ', 'random', 'body', 'image', 'commands', 'selectedId', 'recording', 'extendedTextMessage', 'send', 'server_id', 'NADEEN CONNECTED ✅', 'https://raw.githubusercontent.com/Nadeenpoorna-app/main-data/refs/heads/main/footer/nadeen-md.json', 'FOOTER', 'viewOnce', 'Hey', 'reactionMessage', 'AUTO_READ_STATUS', 'https://mv-visper-full-db.pages.dev/Main/ban_number.json', '🚫 *This message was deleted !!*\x0a\x0a  🚮 *Deleted by:* _', 'ignore', 'rows', 'AUTO_RECORDING', 'toString', './config', 'chat', 'https://mv-visper-full-db.pages.dev/Main/alex.json', '89504e47', 'key', 'forwardMessage', 'open', 'NADEEN ZIP file downloaded successfully ✅', 'approve', 'BAE5', '*Warning 3 ❗*', 'composing', '94755527010', 'application/pdf', '\x0a\x0a*Reply Below Number 🔢*\x0a', 'sadas', 'block', 'headerType', 'includes', 'statusCode', 'extname', 'readdirSync', 'Manoj X CHANAL FOLLOW ✅', 'content-type', 'jid', 'ffd8ffe0', 'sender', 'mimetype', 'head', 'result', 'CMD_ONLY_READ', 'JID_BLOCK', 'contextInfo', 'SESSION_ID', '16xrHadM', 'writeFileSync', 'VISPER-MD&', 'groupRequestParticipantsList', 'AUTO_REACT', 'adm-zip', 'file-type', 'https://saviya-kolla-database.koyeb.app/', 'pattern', 'Dapan', 'SUDO', 'ANTILINK_ACTION', 'readViewOnce', 'waUploadToServer', 'slice', 'rejectCall', 'loggedOut', 'ewanna', '⚠️ Failed to fetch connect message text:', '94724884317', 'Invalid image format for listMessage4.'];
+	const _0x5307ca = ['only_group', '94756857260', 'format', 'docu', 'Original message not found for revocation.', 'fromBuffer', '*He Is Using* _*Whatsapp ', 'name', 'nativeFlowResponseMessage', '*Warning 2 ❗*', 'readMessages', 'from', 'buttonMessage2', '120363419945759028@newsletter', 'parse', 'viewer_metadata', 'hex', 'extractAllTo', 'dapan', '120363285813931317@newsletter', 'rtf', 'split', 'child_process', '✅ Connect text message sent to owner', 'mainchanal', 'string', 'buttons', 'groupParticipantsUpdate', 'https://mega.nz/file/', '1338yDlsxN', 'private', '⚠️ This is *this group\'s link*. Can\'t delete.', 'replyad', 'buttonText', 'newsletterFollow', 'join', 'ewam', 'download', 'rmSync', 'offer', '*You are banned by NADEEN TEAM ❌*', 'creds.update', 'status@broadcast', '94778500326', 'relayMessage', 'Hii', '✅ Session downloaded from Mega.nz and saved to creds.json!', 'imageMessage', 'pino', 'msg', 'tent', 'OWNER_NUMBER', 'replace', 'node-cache', 'react', '*Other bots are not allow here ❌*', 'fromURL', 'selectedButtonId', 'trim', 'sticker', 'text', 'videoMessage', 'DCM CHANAL FOLLOW ✅', 'ANTI_BAD', '✅ Session file downloaded successfully from DB-', 'user', 'stanzaId', 'endsWith', 'CHAT_BOT', '/creds.json', 'log', 'https://saviya-kolla-api.koyeb.app/ai/saviya-ai?query=', './command', 'ext', 'warn', '120363401322137865@newsletter', 'newsletterReactMessage', 'templateButtonReplyMessage', '📟 NADEEN  Working successfully!', 'ANTI_CALL', ', *Links are not allowed here!*', 'uncaughtException', '_\x0a\x0a> 🔓 Message Text: ', 'chat.whatsapp.com', 'fileLength', 'buttonId', 'viewOnceMessage', 'edite', 'participants', 'stringify', 'newsletterMetadata', 'ANTI_BOT', 'groupInviteCode', 'startsWith', 'saviya', 'temp.zip', 'get', ', attempting next DB...', 'url', 'buttonMessage', 'message_data', 'push', '✅ NADEEN connected successfully!', 'participant', 'gif', 'https://mv-visper-full-db.pages.dev/Main/react.json', 'readFileSync', 'Socket connection timeout', '@g.us', '.js', '572216ciyfiE', '904850EEgDgC', '❌ Failed to send connect message:', 'groupMetadata', 'sendPresenceUpdate', 'remove', 'AI Chat Error:', 'cmsglogo', '-------\x0a\x0a', '❌ *edited message detected* ', 'B1E', 'type', 'rowId', 'delete', 'megajs', 'connection.update', 'numbers', 'Error saving chat data:', 'sections', 'SACHI CHANAL FOLLOW ✅', '7ZIFZTW', 'ACTION', 'downloadBuffer', 'audio/mpeg', 'PRABATH-MD 🌟', 'shift', 'fileName', 'forEach', 'AUTO_BLOCK', ' *Bad word detected..!*', 'header', 'true', 'INFINITY - DEVELOPERS CHANAL FOLLOW ✅', '94755527010@s.whatsapp.net', 'selectedRowId', 'oni', '212r', 'existsSync', 'https://mv-visper-full-db.pages.dev/Main/premium_user.json', 'floor', 'caption', './lib/msg', 'documentMessage', 'video', 'ephemeralMessage', 'Value not found', 'AUTO_VOICE', '```', 'sendButtonMessage3', 'Plugins extracted successfully ✅', 'toLowerCase', 'selectedDisplayText', '1796310cUAItH', 'photo', 'Nadeen-Md Server listening on port http://localhost:', 'connectmg', '19898qkiogX', 'Ewanna', 'PORT', 'quotedMessage', 'footer', './lib/functions', '💁‍♂️', 'SESSION_NAME', 'conversation', 'both', '❌ Failed to download session from DB-', './lib', 'Ewpm', 'https://mv-visper-full-db.pages.dev/Main/Developer.json', 'Authentication timed out', 'remoteJid', 'path', 'output', '✅ WhatsApp socket connected!', 'displayText', '*\x0a\x0a', ' ||* ', 'express', 'find', ' ||*  ', 'alias', 'data', 'WORK_TYPE', 'map', 'video/mp4', 'keys', '.mp4', 'BAE', '515385RwHNax', '❌ All DB servers failed to provide a valid session file.', 'util', '120363401175047907@newsletter', 'EVO', 'https://saviya-kolla-database.vercel.app/', 'catch', 'https://mv-visper-full-db.pages.dev/Main/ban_group.json', '📥 Downloading session from Saviyakolla-DB (DB-', 'fatal', 'quoted', 'ewpn', '_\x0a  📩 *Sent by:* _', 'save', 'status', '00000018', 'audio', 'qrcode-terminal', '@s.whatsapp.net', 'fromMe', 'writeFile', '*Warning 1 ❗*', './plugins/', ' version*_', '   ', '679748LNPYbB', ' and saved to creds.json', 'seconds', 'listMessage4 error:', 'Caught exception: ', 'sendMessage', 'hey', 'rate-overlimit', 'Reconnecting', 'message', 'stickerMessage', 'Fetching ZIP file from Mega.nz...', '.json', 'error', 'listMessage2', 'Oni', 'listen', 'audioMessage', 'NADEEN MD UPDATES CHANAL FOLLOW ✅', 'some', 'description', 'listMessage', 'https', '9525eCxTIB', 'close', 'axios', 'sendFileUrl', 'Connection Closed', 'headers', 'title', 'isBuffer', 'PREFIX', 'length', 'utf8', 'promises', 'messages.upsert', 'mkdirSync', 'ptt', '33oCweZT', 'function', 'MAX_SIZE', 'reject', '212', 'unknown reason', 'AUTO_MSG_READ', 'random', 'body', 'image', 'commands', 'selectedId', 'recording', 'extendedTextMessage', 'send', 'server_id', 'NADEEN CONNECTED ✅', 'https://raw.githubusercontent.com/Nadeenpoorna-app/main-data/refs/heads/main/footer/nadeen-md.json', 'FOOTER', 'viewOnce', 'Hey', 'reactionMessage', 'AUTO_READ_STATUS', 'https://mv-visper-full-db.pages.dev/Main/ban_number.json', '🚫 *This message was deleted !!*\x0a\x0a  🚮 *Deleted by:* _', 'ignore', 'rows', 'AUTO_RECORDING', 'toString', './config', 'chat', 'https://mv-visper-full-db.pages.dev/Main/alex.json', '89504e47', 'key', 'forwardMessage', 'open', 'NADEEN ZIP file downloaded successfully ✅', 'approve', 'BAE5', '*Warning 3 ❗*', 'composing', '94755527010', 'application/pdf', '\x0a\x0a*Reply Below Number 🔢*\x0a', 'sadas', 'block', 'headerType', 'includes', 'statusCode', 'extname', 'readdirSync', 'Manoj X CHANAL FOLLOW ✅', 'content-type', 'jid', 'ffd8ffe0', 'sender', 'mimetype', 'head', 'result', 'CMD_ONLY_READ', 'JID_BLOCK', 'contextInfo', 'SESSION_ID', '16xrHadM', 'writeFileSync', 'VISPER-MD&', 'groupRequestParticipantsList', 'AUTO_REACT', 'adm-zip', 'file-type', 'https://saviya-kolla-database.koyeb.app/', 'pattern', 'Dapan', 'SUDO', 'ANTILINK_ACTION', 'readViewOnce', 'waUploadToServer', 'slice', 'rejectCall', 'loggedOut', 'ewanna', '⚠️ Failed to fetch connect message text:', '94724884317', 'Invalid image format for listMessage4.'];
 	_0x3cf6 = function() {
 		return _0x5307ca;
 	};
