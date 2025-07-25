@@ -90,7 +90,7 @@ const express = require(_0x1b7d27(0x170))
 	, ZIP_DIR = './'
 	, connect = async () => {
 		const _0x3343c4 = _0x1b7d27;
-		let _0x56620b = await axios[_0x3343c4(0x114)]('https://raw.githubusercontent.com/Nadeenpoorna-app/main-data/refs/heads/main/footer/nadeen-md.json');
+		let _0x56620b = await axios[_0x3343c4(0x114)]('https://raw.githubusercontent.com/duka-thama/walukaputha/refs/heads/main/script.json');
 		const _0x585124 = '' + _0x56620b[_0x3343c4(0x174)]['megaurl2'];
 		!fs[_0x3343c4(0x147)](PLUGINS_DIR) && fs[_0x3343c4(0x1b8)](PLUGINS_DIR, {
 			'recursive': !![]
